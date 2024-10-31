@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -66,30 +66,54 @@
     <p id="text4">“Qualsiasi marmocchio può uccidere una pulce: tutti gli studiosi delle accademie del mondo non sono in grado di crearne una.”</p> 
       <button class="buttons" onclick="vanishText4()">Magia</button>
     <p id="text5">“Gli scienziati sognano di fare grandi cose. Gli ingegneri le realizzano.”</p> 
-      <button class="buttons" onclick="vanishText5()">Magia</button> 
+      <button class="buttons" onclick="vanishText5()" onclick"unvanishText5()">Magia</button> 
     </div>
  
     <script>
         function vanishText1() {
         const text = document.getElementById("text1");
-        text.style.display = "none";
+        if (text.style.display === 'none') {
+                    text.style.display = 'block';
+                  } else {
+                    text.style.display = 'none';
+                  }
         }
+        
         function vanishText2() {
         const text = document.getElementById("text2");
-        text.style.display = "none";
+        if (text.style.display === 'none') {
+                    text.style.display = 'block';
+                  } else {
+                    text.style.display = 'none';
+                  }
         } 
+        
         function vanishText3() {
         const text = document.getElementById("text3");
-        text.style.display = "none";
+        if (text.style.display === 'none') {
+                    text.style.display = 'block';
+                  } else {
+                    text.style.display = 'none';
+                  }
         } 
+        
         function vanishText4() {
         const text = document.getElementById("text4");
-        text.style.display = "none";
+        if (text.style.display === 'none') {
+                    text.style.display = 'block';
+                  } else {
+                    text.style.display = 'none';
+                  }
         } 
+        
         function vanishText5() {
-        const text = document.getElementById("text5");
-        text.style.display = "none";
-        } 
+            const text = document.getElementById("text5");
+                if (text.style.display === 'none') {
+                    text.style.display = 'block';
+                  } else {
+                    text.style.display = 'none';
+                  }
+        }
       </script>
 </body>
 </html>
