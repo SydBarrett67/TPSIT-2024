@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+    body {
+        background-color: brown ;
+    }
+    #box {
+        color:brown;
+        left: 50%;
+        font-size: 18px;
+    }
+    #text1 {
+        background-color: beige;
+        padding: 5px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+    #text2 {
+        background-color: beige;
+        padding: 5px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+    #text3 {
+        background-color: beige;
+        padding: 5px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+    #text4 {
+        background-color: beige;
+        padding: 5px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+    #text5 {
+        background-color: beige;
+        padding: 5px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+    .buttons {
+        margin: auto;
+        background-color: beige;
+        color: brown;
+        padding: 10px;
+        border-radius: 15px;
+        box-shadow: 5px 5px 10px beige;
+    }
+    
+    
+    </style>
+</head>
+<body>
+    <div id="box">
+    <p id="text1">“Fino a oggi la maggior parte degli scienziati è stata troppo occupata nello sviluppo di nuove teorie che descrivono che cosa sia l'universo per porsi la domanda perché?”</p> 
+      <button class="buttons"onclick="vanishText1()">Magia</button> 
+    <p id="text2">“Se verrà dimostrato che la mia teoria della relatività è valida, la Germania dirà che sono tedesco e la Francia che sono cittadino del mondo. Se la mia teoria dovesse essere sbagliata, la Francia dirà che sono un tedesco e la Germania che sono un ebreo.””</p> 
+      <button class="buttons" onclick="vanishText2()">Magia</button> 
+    <p id="text3">“Lo scienziato nel suo laboratorio non è solo un tecnico, è anche un bambino davanti a fenomeni della Natura che lo affascinano come un racconto di fate.”</p> 
+      <button class="buttons" onclick="vanishText3()">Magia</button>
+    <p id="text4">“Qualsiasi marmocchio può uccidere una pulce: tutti gli studiosi delle accademie del mondo non sono in grado di crearne una.”</p> 
+      <button class="buttons" onclick="vanishText4()">Magia</button>
+    <p id="text5">“Gli scienziati sognano di fare grandi cose. Gli ingegneri le realizzano.”</p> 
+      <button class="buttons" onclick="vanishText5()">Magia</button> 
+    </div>
+ 
+    <script>
+        function vanishText1() {
+        const text = document.getElementById("text1");
+        text.style.display = "none";
+        }
+        function vanishText2() {
+        const text = document.getElementById("text2");
+        text.style.display = "none";
+        } 
+        function vanishText3() {
+        const text = document.getElementById("text3");
+        text.style.display = "none";
+        } 
+        function vanishText4() {
+        const text = document.getElementById("text4");
+        text.style.display = "none";
+        } 
+        function vanishText5() {
+        const text = document.getElementById("text5");
+        text.style.display = "none";
+        } 
+      </script>
+</body>
+</html>
