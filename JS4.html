@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            background-color: beige;
+        }
+        #es1 {
+            background-color: #2e2719;
+            padding: 10px;
+            border: 2px solid brown;
+            color: beige;
+        }
+        #val1 {
+            width: 30%;
+            border: 2px solid brown;
+            background-color: beige;
+            margin: 5px;
+            padding: 5px;
+        }
+        #val2 {
+            width: 30%;
+            border: 2px solid brown;
+            background-color: beige;
+            margin: 5px;
+            padding: 5px;
+        }
+        #button {
+            background-color: beige;
+            color: brown;
+            border-radius: 25px;
+            width: 100px;
+            height: 50px;
+            margin-left: 45%;
+            border: 2px solid brown;
+        }
+    
+    
+    </style>
+</head>
+<body>
+    <div id="es1">
+        <label>Valore 1</label>
+        <input type="text" name="" id="val1">
+        <br>
+        <label>Valore 2</label>
+        <input type="text" name="" id="val2">
+        <br>
+        <button id="button" onclick="calcola()">Calcola</button>
+    
+        <p id="out1">Risultato</p>    
+    </div>
+
+    <script>
+        const elementOut=document.getElementById("out1");
+
+    
+        function calcola() {
+            elementOut.innerHTML = "Negro";
+        }
+    
+    </script>
+</body>
+</html>
