@@ -1,69 +1,83 @@
-﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+    <meta charset="UTF-8">
+     
+    <title>Calcolo Dislivello</title>
     <style>
         body {
-            background-color: beige;
+        font-family: Verdana, Geneva, Tahoma, sans-serif, sans-serif;
+        text-align: left;
+        background-size: cover;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 20px;
+        background-image: url("https://cdn.mos.cms.futurecdn.net/xaycNDmeyxpHDrPqU6LmaD.jpg");
         }
-        #es1 {
-            background-color: #2e2719;
-            padding: 10px;
-            border: 2px solid brown;
+            .container {
+            max-width: 500px;
             color: beige;
-        }
-        #val1 {
-            width: 30%;
-            border: 2px solid brown;
-            background-color: beige;
-            margin: 5px;
-            padding: 5px;
-        }
-        #val2 {
-            width: 30%;
-            border: 2px solid brown;
-            background-color: beige;
-            margin: 5px;
-            padding: 5px;
-        }
-        #button {
-            background-color: beige;
-            color: brown;
+            margin: auto;
+            margin-top: 10%;
+            padding: 20px;
+            border: 3px solid beige;
+
             border-radius: 25px;
-            width: 100px;
-            height: 50px;
-            margin-left: 45%;
-            border: 2px solid brown;
-        }
-    
-    
+            background-color: #6e1919;
+            }
+
+            label, input {
+                display: block;
+                width: 100%;
+                margin-bottom: 15px;
+
+            }
+            button {
+                width: 100%;
+                padding: 10px;
+                background-color: beige;
+                color: brown;
+                border: none;
+                border-radius: 10px;
+            }
     </style>
 </head>
 <body>
-    <div id="es1">
-        <label>Valore 1</label>
-        <input type="text" name="" id="val1">
-        <br>
-        <label>Valore 2</label>
-        <input type="text" name="" id="val2">
-        <br>
-        <button id="button" onclick="calcola()">Calcola</button>
+
+    <div class="container">
+        <h2>Calcolo totale del dislivello</h2>
     
-        <p id="out1">Risultato</p>    
+            <label for="start">Altezza alla partenza (m):</label>
+            <input type="number" id="hPartenza" required>
+        
+            <label for="pause">Altezza alla pausa pranzo (m):</label>
+            <input type="number" id="hPausa" required>
+        
+            <label for="end"> Altezza all'arrivo (m):</label>
+            <input type="number" id="hFine" required>
+    
+        <button onclick="calcola()">Calcolare</button>
+
+        <h3>Risultato:</h3>
+        <p id="output"></p>
     </div>
 
     <script>
-        const elementOut=document.getElementById("out1");
-
-    
         function calcola() {
-            let v1=document.getElementById("Val1").value;
-            let v2=document.getElementById("Val2").value;
-            elementOut.innerHTML = "Negro!"+" "+v1*v2;
+            
+            const partenza =  (document.getElementById("hPartenza").value);
+            const pausa =  (document.getElementById("hPausa").value);
+            const fine =  (document.getElementById("hFine").value);
+
+        
+            const dislivelloIniziale = Math.abs(pausa - partenza);
+            const dislivelloFinale = Math.abs(fine - pausa);
+            const dislivelloTotale = dislivelloIniziale + dislivelloFinale;
+
+            
+            document.getElementById("output").innerText = `Dislivello totale: ${dislivelloTotale} metri`;
         }
-    
     </script>
+
 </body>
 </html>
