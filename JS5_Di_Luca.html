@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #998b85;
+        }
+        #div1 {
+            border-radius: 25px;
+            border: 2px solid brown; 
+            padding:10px;
+            background-color: beige;
+            color: brown;
+            margin-top:0;
+            margin-bottom: 25px;
+
+        }
+        #title {
+            border-radius: 25px;
+            border: 2px solid brown; 
+            padding:10px;
+            background-color: beige;
+            color: brown;
+            margin-top:0;
+        }
+        #button {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: brown;
+            background-color: beige;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+        .button:active {
+            background-color: #c9c9b3;
+            box-shadow: 0 5px #666;
+            transform: translateY(10px);
+        }
+        #out {
+            border-radius: 25px;
+            padding: 10px;  
+            background-color: beige;
+            color: brown;
+            border: 2px solid brown;
+            margin-left: 40%;
+            margin-top:15px;
+            margin-right: 40%;
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+    <h1 id="title">Lezione sul setInterval</h1>
+    <div id="div1">
+        <p> Il setInterval è un comando per
+            creare un temporizzatore cioè una chiamata ad una
+            funzione ogni n millisecondi
+        </p>
+    </div>
+    <button id="button"onclick="getTime()"> Click</button>
+
+    <div id="out">
+            <p id="out1"></p>
+
+    </div>
+
+<script>
+    const mioOutput=document.getElementById("out1");
+    setInterval(getTime,200)
+    let n = 0;
+    function getTime(){
+
+        
+        mioOutput.innerHTML=n;
+        n++;
+    }
+
+
+
+</script>
+
+</body>
+</html>
