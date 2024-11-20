@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            background-image: url("https://www.montagnaestate.it/wp-content/uploads/lago-federa-in-estate.jpg");
+            background-repeat: no-repeat;
+            background-size: ;
+        }
+        #container {
+            margin-left: 40%;
+        }
+        #immagine {
+            width: 250px;
+            border-radius: 25px;
+            border: 2px solid brown;
+        }
+        #div {
+            background-color: beige;
+            color: brown;
+            border-radius: 25px;
+            border: 2px solid brown;
+            padding: 20px;
+        }
+        #div2 {
+            background-color: beige;
+            color: brown;
+            border-radius: 25px;
+            border: 2px solid brown;
+            padding: 10px;
+            padding-top: 5px;
+            margin: auto;
+        }
+    
+    
+    </style>
+</head>
+<body>
+    <div id="div">
+        <h1>Morra cinese</h1>
+        <h3>Generazione casuale di una partita di morra cinese</h3>
+    </div>
+    <div id="div2">
+    <h1>Counter: </h1>
+    <h1 id="counter">3</h1>
+    </div>
+    <p id="container">
+        <img id="immagine">
+    </p>
+
+    <script>
+        let x = Math.floor((Math.random() * 3) + 1);
+        setInterval(counter,500);
+        let n = 3;
+        function counter() {
+            let x = Math.floor((Math.random() * 3) + 1);
+            if (n>=0) {
+                document.getElementById("counter").innerHTML = n;
+                n--;
+            }
+            else {
+                if (x==1) {
+                    document.getElementById("immagine").src =  "https://lapacedeisensi.it/wp-content/uploads/2020/07/lavica-pietra.jpg";
+                }
+                if (x==2) {
+                    document.getElementById("immagine").src =  "https://buffetti.it/media/catalog/product/cache/895042ac49a6141fad34b856d5844d12/4/1/41513_004940MT0_1143.jpg";
+                }
+                if (x==3) {
+                    document.getElementById("immagine").src =  "https://master.opitec.com/out/pictures/master/product/1/361496-000-000-VO-02-z.jpg";
+                }
+                n=3;
+            }
+        }
+        
+    </script>
+
+</body>
+</html>
