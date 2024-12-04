@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            background-image: url("https://res.cloudinary.com/lastminute-contenthub/s--i9c7oro9--/c_limit,h_999999,w_1920/f_auto/q_auto:eco/v1/DAM/Photos/Destinations/Europe/France/shutterstock_1254488860");
+        }
+        #out2{
+            font-size: large;
+            color: brown;
+        }
+        #titolo {
+            font-size: 25px;
+            text-align: center;
+        }
+        #contenitoreScelte {
+            text-align: center;
+            margin: auto;
+        }
+        .scelte {
+            margin: 20px;
+            width: 150px;
+            height: 75px;
+            font-size: large;
+            background-color: #470823;
+            color: white;
+            transition-duration: 0.5s;
+            border-radius: 25px;
+            border: 3px solid #a6a235;
+        }
+        .scelte:hover {
+            background-color: #fa7ab2;
+            color: black;
+            box-shadow: 5px 5px 20px black;
+            width: 175px;
+            height: 90px;
+            font-size: 30px;
+        }
+        .scelte:active {
+            background-color: #a6353b;
+            transform: translateY(15px);
+        }
+        #output {
+            border-radius: 25px;
+            font-size: 25px;
+            opacity: 0.5;
+            padding: 25px;
+            background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSFNyDqJM9CMlVXrA2KzW0yFoP9jE2ROcYMw&s");
+        }
+        #outBot {
+            height: 100px;
+            width: 100px;
+            border: 5px solid black;
+            border-radius: 25px;
+            padding: 30px;
+        }
+        #condizioni {
+            font-size: 30px;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="titolo">
+        <h1 style="color: white;">Morra cinese contro il bot.</h1>
+    </div>
+    <p id="out1"></p>
+    <div id="contenitoreScelte">
+        <button class="scelte" onclick=sasso() onclick=giocataBot()>Sasso</button>
+        <button class="scelte" onclick=carta() onclick=giocataBot()>Carta</button>
+        <button class="scelte" onclick=forbice() onclick=giocataBot()>Forbice</button>
+    </div>
+    <br>
+    <div id="output">
+        <img id="outBot">
+        <img id="outPla">
+        <p id="condizioni">Ciao</p>
+    </div>
+<script>
+
+    let morra=["sasso","carta","forbice"];
+    let out;
+    let puntiBot = 0;
+    let puntiGioc = 0;
+    let numeroCasuale;
+    function giocataBot() {
+        numeroCasuale=Math.floor(Math.random()*3);
+        out=morra[numeroCasuale];
+    }
+    function sasso() {
+        if (out=="sasso") {
+            document.getElementById("condizioni").innerHTML = "Parità.";
+        }
+        if (out=="carta") {
+            document.getElementById("condizioni").innerHTML = "Hai perso.";
+            puntiBot++;
+        }
+        if (out=="forbice") {
+            document.getElementById("condizioni").innerHTML = "Hai vinto.";
+            puntiGioc++;
+        }
+    }
+    function carta() {
+        if (out=="sasso") {
+            document.getElementById("condizioni").innerHTML = "Hai vinto.";
+            puntiBot++;
+        }
+        if (out=="carta") {
+            document.getElementById("condizioni").innerHTML = "Parità.";
+            puntiBot++;
+        }
+        if (out==2) {
+            document.getElementById("condizioni").innerHTML = "Hai perso.";
+            puntiBot++;
+        }
+    }
+    function forbice() {
+        if (out=="sasso") {
+            document.getElementById("condizioni").innerHTML = "Hai perso.";
+            puntiBot++;
+        }
+        if (out=="carta") {
+            document.getElementById("condizioni").innerHTML = "Hai vinto.";
+            puntiGioc++;
+        }
+        if (out==2) {
+            document.getElementById("condizioni").innerHTML = "Parità.";
+            
+        }
+    }
+}    
+
+   
+
+
+</script>
+
+
+
+   
+</body>
+</html>
