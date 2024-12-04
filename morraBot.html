@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,21 +47,51 @@
         #output {
             border-radius: 25px;
             font-size: 25px;
-            opacity: 0.5;
+            background: rgba(0, 0, 0, 0.7);
             padding: 25px;
-            background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSFNyDqJM9CMlVXrA2KzW0yFoP9jE2ROcYMw&s");
+            color: white;
         }
         #outBot {
-            height: 100px;
-            width: 100px;
-            border: 5px solid black;
+            height: 250px;
+            width: 250px;
+            border: 5px solid brown;
             border-radius: 25px;
-            padding: 30px;
+        }
+        #outPla {
+            height: 250px;
+            width: 250px;
+            border: 5px solid brown;
+            border-radius: 25px;
         }
         #condizioni {
             font-size: 30px;
             color: white;
             text-align: center;
+        }
+        #out {
+            font-size: 30px;
+            color: white;
+        }
+        #gioc {
+            font-size: 30px;
+            color: white;
+        }
+        
+        #testoL {
+            text-align: left;
+            color: white;
+            width: 50%;
+        }
+        #testoR {
+            text-align: right;
+            width: 50%;
+            color: white;
+        }
+        #inizio {
+            width:20%;
+            margin-left: 40%;
+            margin-right: 40%;
+            transition-duration: 1.5s;
         }
     </style>
 </head>
@@ -69,80 +99,111 @@
     <div id="titolo">
         <h1 style="color: white;">Morra cinese contro il bot.</h1>
     </div>
-    <p id="out1"></p>
-    <div id="contenitoreScelte">
-        <button class="scelte" onclick=sasso() onclick=giocataBot()>Sasso</button>
-        <button class="scelte" onclick=carta() onclick=giocataBot()>Carta</button>
-        <button class="scelte" onclick=forbice() onclick=giocataBot()>Forbice</button>
-    </div>
+    <button id="inizio" class="scelte" onclick="inizio()">Iniziare</button>
     <br>
-    <div id="output">
-        <img id="outBot">
-        <img id="outPla">
-        <p id="condizioni">Ciao</p>
+    <div id="tutto" style="display: none;">
+        <div id="output">
+            <div style="display: flex; justify-content: space-between;">
+                <img id="outBot">
+                <img id="outPla">
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <p id="testoL">Il bot ha giocato: <b id="out">---</b></p>
+                <p id="testoR">Il giocatore ha scelto: <b id="gioc">---</b></p>
+            </div>
+            <p id="condizioni">----</p>
+            <div style="display: flex; justify-content: space-between;">
+                <p id="testoL">Punteggio BOT: <b id="puntiBot">0</b></p>
+                <p id="testoR">Punteggio <b id="name">Giocatore</b>: <b id="puntiGioc">0</b></p>
+            </div>
+        </div>
+        <p id="out1"></p>
+        <div id="contenitoreScelte">
+            <button id="sasso"class="scelte" onclick="giocataBot();sasso()">Sasso</button>
+            <button id="carta"class="scelte" onclick="giocataBot();carta()">Carta</button>
+            <button id="forbice"class="scelte" onclick="giocataBot();forbice()">Forbice</button>
+        </div>
     </div>
+    
 <script>
 
-    let morra=["sasso","carta","forbice"];
-    let out;
-    let puntiBot = 0;
-    let puntiGioc = 0;
+    let morra=["Sasso","Carta","Forbice"];
     let numeroCasuale;
+    const outB = document.getElementById("puntiBot");
+    const outG = document.getElementById("puntiGioc");
+    let bot = document.getElementById("out");
+    let puntiGioc=0;
+    let puntiBot=0;
+    function inizio() {
+        let name = prompt("Inserisci il tuo nome da giocatore: ", "Giocatore");
+        document.getElementById("name").innerHTML=name;
+        document.getElementById("inizio").style.display = "none";
+        document.getElementById("tutto").style.display = "block";
+    }
     function giocataBot() {
         numeroCasuale=Math.floor(Math.random()*3);
-        out=morra[numeroCasuale];
+        bot.innerHTML=morra[numeroCasuale];
+        if (numeroCasuale==0) {
+            document.getElementById("outBot").src = "https://www.lucavivan.com/wp-content/uploads/2018/08/Piancavallo-luoghi-dietro-casa-Tambre-Veneto-Belluno-Sasso-della-Madonna-rifugio-Semenza.jpg"
+        }
+        if (numeroCasuale==1) {
+            document.getElementById("outBot").src = "https://www.stampaprint.net/it/blog/wp-content/uploads/2016/03/plico-di-carta.jpg"
+        }
+        if (numeroCasuale==2) {
+            document.getElementById("outBot").src = "https://arrotinocoltelleria.it/wp-content/uploads/2020/09/forbici.jpg"
+        }
     }
     function sasso() {
-        if (out=="sasso") {
-            document.getElementById("condizioni").innerHTML = "Parità.";
-            document.getElementById("outPla").src
+        document.getElementById("gioc").innerHTML = "Sasso";
+        document.getElementById("outPla").src = "https://www.lucavivan.com/wp-content/uploads/2018/08/Piancavallo-luoghi-dietro-casa-Tambre-Veneto-Belluno-Sasso-della-Madonna-rifugio-Semenza.jpg";
+        if (bot.innerHTML=="Sasso") {
+            document.getElementById("condizioni").innerHTML = "Parità";
         }
-        if (out=="carta") {
-            document.getElementById("condizioni").innerHTML = "Hai perso.";
+        if (bot.innerHTML=="Carta"){
             puntiBot++;
+            outB.innerHTML = puntiBot;
+            document.getElementById("condizioni").innerHTML = "Ha vinto il BOT.";
         }
-        if (out=="forbice") {
-            document.getElementById("condizioni").innerHTML = "Hai vinto.";
+        if (bot.innerHTML=="Forbice") {
             puntiGioc++;
+            outG.innerHTML = puntiGioc;
+            document.getElementById("condizioni").innerHTML = "Ha vinto il Giocatore.";
         }
     }
     function carta() {
-        if (out=="sasso") {
-            document.getElementById("condizioni").innerHTML = "Hai vinto.";
-            puntiBot++;
+        document.getElementById("gioc").innerHTML = "Carta";
+        document.getElementById("outPla").src = "https://www.stampaprint.net/it/blog/wp-content/uploads/2016/03/plico-di-carta.jpg"
+        if (bot.innerHTML=="Carta") {
+            document.getElementById("condizioni").innerHTML = "Parità";
         }
-        if (out=="carta") {
-            document.getElementById("condizioni").innerHTML = "Parità.";
+        if (bot.innerHTML=="Forbice"){
             puntiBot++;
+            outB.innerHTML = puntiBot;
+            document.getElementById("condizioni").innerHTML = "Ha vinto il BOT.";
         }
-        if (out==2) {
-            document.getElementById("condizioni").innerHTML = "Hai perso.";
-            puntiBot++;
+        if (bot.innerHTML=="Sasso") {
+            puntiGioc++;
+            outG.innerHTML = puntiGioc;
+            document.getElementById("condizioni").innerHTML = "Ha vinto il Giocatore.";
         }
     }
     function forbice() {
-        if (out=="sasso") {
-            document.getElementById("condizioni").innerHTML = "Hai perso.";
+        document.getElementById("gioc").innerHTML = "Forbice";
+        document.getElementById("outPla").src = "https://arrotinocoltelleria.it/wp-content/uploads/2020/09/forbici.jpg"
+        if (bot.innerHTML=="Forbice") {
+            document.getElementById("condizioni").innerHTML = "Parità";
+        }
+        if (bot.innerHTML=="Sasso"){
             puntiBot++;
+            outB.innerHTML = puntiBot;
+            document.getElementById("condizioni").innerHTML = "Ha vinto il BOT.";
         }
-        if (out=="carta") {
-            document.getElementById("condizioni").innerHTML = "Hai vinto.";
+        if (bot.innerHTML=="Carta") {
             puntiGioc++;
-        }
-        if (out==2) {
-            document.getElementById("condizioni").innerHTML = "Parità.";
-            
+            outG.innerHTML = puntiGioc;
+            document.getElementById("condizioni").innerHTML = "Ha vinto il Giocatore.";
         }
     }
-}    
-
-   
-
-
-</script>
-
-
-
-   
+</script>   
 </body>
 </html>
