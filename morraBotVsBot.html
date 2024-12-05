@@ -1,0 +1,174 @@
+﻿﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            background-image: url("https://res.cloudinary.com/lastminute-contenthub/s--i9c7oro9--/c_limit,h_999999,w_1920/f_auto/q_auto:eco/v1/DAM/Photos/Destinations/Europe/France/shutterstock_1254488860");
+        }
+        #titolo {
+            font-size: 25px;
+            text-align: center;
+        }
+        #contenitoreScelte {
+            text-align: center;
+            margin: auto;
+        }
+        .scelte {
+            margin: 20px;
+            width: 250px;
+            height: 75px;
+            font-size: large;
+            background-color: #470823;
+            color: white;
+            transition-duration: 0.5s;
+            border-radius: 25px;
+            border: 3px solid #a6a235;
+        }
+        .scelte:hover {
+            background-color: #fa7ab2;
+            color: black;
+            box-shadow: 5px 5px 20px black;
+            width: 290px;
+            height: 110px;
+            font-size: 30px;
+        }
+        .scelte:active {
+            background-color: #a6353b;
+            transform: translateY(15px);
+        }
+        #output {
+            border-radius: 25px;
+            font-size: 25px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 25px;
+            color: white;
+        }
+        #outBot1 {
+            height: 300px;
+            width: 300px;
+            border: 5px solid brown;
+            border-radius: 25px;
+        }
+        #outBot2 {
+            height: 300px;
+            width: 300px;
+            border: 5px solid brown;
+            border-radius: 25px;
+        }
+        #condizioni {
+            font-size: 30px;
+            color: white;
+            text-align: center;
+        }
+        #out {
+            font-size: 30px;
+            color: white;
+        }
+        #gioc {
+            font-size: 30px;
+            color: white;
+        }
+        
+        #testoL {
+            text-align: left;
+            color: white;
+            width: 50%;
+        }
+        #testoR {
+            text-align: right;
+            width: 50%;
+            color: white;
+        }
+        #inizio {
+            width:20%;
+            margin-left: 40%;
+            margin-right: 40%;
+            transition-duration: 1.5s;
+        }
+    </style>
+</head>
+<body>
+    <div id="titolo">
+        <h1 style="color: white;">Morra cinese contro il bot.</h1>
+    </div>
+    <button id="inizio" class="scelte" onclick="inizio()">Iniziare</button>
+    <br>
+    <div id="tutto" style="display: none;">
+        <div id="output">
+            <div style="display: flex; justify-content: space-between;">
+                <img id="outBot1">
+                <img id="outBot2">
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <p id="testoL">Il BOT1 ha giocato: <b id="out1">---</b></p>
+                <p id="testoR">Il BOT2 ha scelto: <b id="out2">---</b></p>
+            </div>
+            <p id="condizioni">----</p>
+            <div style="display: flex; justify-content: space-between;">
+                <p id="testoL">Punteggio BOT: <b id="puntiBot">0</b></p>
+                <p id="testoR">Punteggio <b id="name">Giocatore</b>: <b id="puntiGioc">0</b></p>
+            </div>
+        </div>
+        <div id="contenitoreScelte">
+            <button id="sasso" class="scelte" onclick="giocataBot1();giocataBot2()">Inizio simulazione</button>
+        </div>
+    </div>
+    
+<script>
+
+    let morra=["Sasso","Carta","Forbice"];
+    let numeroCasuale;
+    const outB = document.getElementById("puntiBot");
+    const outG = document.getElementById("puntiGioc");
+    const bot1 = document.getElementById("out1");
+    const bot2 = document.getElementById("out2");
+    let puntiGioc=0;
+    let puntiBot=0;
+    let numPartite;
+    let numeroCasuale1;
+    let n=0;
+    function inizio() {
+        numPartite = prompt("Inserisci il numero di Partite da simulare: ", "....");
+        document.getElementById("inizio").style.display = "none";
+        document.getElementById("tutto").style.display = "block";
+    }
+    function simulazione() {
+        while (n<numPartite) {
+        giocataBot1();
+        giocataBot2();
+        n++;
+        }
+    }
+    function giocataBot1() {
+        numeroCasuale=Math.floor(Math.random()*3);
+        bot1.innerHTML=morra[numeroCasuale];
+        if (numeroCasuale==0) {
+            document.getElementById("outBot1").src = "https://www.lucavivan.com/wp-content/uploads/2018/08/Piancavallo-luoghi-dietro-casa-Tambre-Veneto-Belluno-Sasso-della-Madonna-rifugio-Semenza.jpg"
+        }
+        if (numeroCasuale==1) {
+            document.getElementById("outBot1").src = "https://www.stampaprint.net/it/blog/wp-content/uploads/2016/03/plico-di-carta.jpg"
+        }
+        if (numeroCasuale==2) {
+            document.getElementById("outBot1").src = "https://arrotinocoltelleria.it/wp-content/uploads/2020/09/forbici.jpg"
+        }
+    }
+    function giocataBot2() {
+        numeroCasuale1=Math.floor(Math.random()*3);
+        bot2.innerHTML=morra[numeroCasuale1];
+        if (numeroCasuale1==0) {
+            document.getElementById("outBot2").src = "https://www.lucavivan.com/wp-content/uploads/2018/08/Piancavallo-luoghi-dietro-casa-Tambre-Veneto-Belluno-Sasso-della-Madonna-rifugio-Semenza.jpg"
+        }
+        if (numeroCasuale1==1) {
+            document.getElementById("outBot2").src = "https://www.stampaprint.net/it/blog/wp-content/uploads/2016/03/plico-di-carta.jpg"
+        }
+        if (numeroCasuale1==2) {
+            document.getElementById("outBot2").src = "https://arrotinocoltelleria.it/wp-content/uploads/2020/09/forbici.jpg"
+        }
+    }
+</script>   
+</body>
+</html>
