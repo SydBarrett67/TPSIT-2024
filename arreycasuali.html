@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array 1</title>
+
+<style>
+    body {
+        background-image: url("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=pexels-padrinan-255379.jpg&fm=jpg");
+        background-size: 100%;
+    }
+    #container{
+        display: inline-block;
+        border: 2px solid brown;
+        border-radius: 25px;
+        padding: 20px;
+        color: white;
+        background-color: rgba(0,0,0,0.6);
+    }
+
+    h1 {
+        text-align: center;
+    }
+</style>
+
+
+</head>
+<body>
+
+    <h1><i>Array</i></h1>
+
+    <p style="font-size: 25px">Output: </p>
+
+    <div id="container">
+        <p id="out1"></p>
+    </div>
+
+    <script>
+        let numeri=[];
+        RiempiArrayConNumeri()
+        document.getElementById("out1").innerHTML=numeri;
+
+        function RiempiArrayConNumeri() {
+            let numero=0;
+                for(let i=0;i<100;i++) {
+                    numeri[i]=Math.floor(Math.random()*100);        
+                }
+        }
+    </script>
+   
+</body>
+</html>
