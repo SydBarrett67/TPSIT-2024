@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Arrayss</title>
+    <style>
+    body {
+        background-image: url("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=pexels-padrinan-255379.jpg&fm=jpg");
+        background-size: 100%;
+    }
+    #container{
+        display: inline-block;
+        border: 2px solid brown;
+        border-radius: 25px;
+        padding: 20px;
+        color: white;
+        background-color: rgba(0,0,0,0.6);
+    }
+
+    h1 {
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <h1><i>Array</i></h1>
+
+    <p style="font-size: 25px; text-align: center;">Media e visualizzazione array: </p>
+
+    <div id="container">
+        <p>Ultimo numero casuale generato: <b id="out1">Ciao</b></p>
+        <p>Media totale: <b id="out2">Fratello</b></p>
+    </div>
+
+    <script>
+        let numeri=[];
+        let sum=0;
+        let media=0;
+        setInterval(RiempiArrayConNumeri,1000);
+        function RiempiArrayConNumeri() {
+            numeroCasuale=Math.floor(Math.random()*90+1);
+            numeri.push(numeroCasuale);
+            document.getElementById("out1").innerHTML = numeroCasuale;
+            console.log(numeri)
+            document.getElementById("out2").innerHTML = mediaArray(numeri);
+        }
+        function mediaArray(num) {
+            let sum=0;
+            let media=0;
+            for (let i=0;i<num.length;i++) {
+                sum+=num[i];
+            }
+            media = parseFloat(sum/num.length);
+            return media;
+        }
+    </script>
+   
+</body>
+</html>
