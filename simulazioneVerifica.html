@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Arrayss</title>
+    <style>
+    body {
+        background-image: url("https://images.pexels.com/photos/255379/pexels-photo-255379.jpeg?cs=srgb&dl=pexels-padrinan-255379.jpg&fm=jpg");
+        background-size: 100%;
+    }
+    #container{
+        display: inline-block;
+        border: 2px solid brown;
+        width: 900px;
+        border-radius: 25px;
+        padding: 30px;
+        font-size: 45px;
+        color: white;
+        background-color: rgba(0,0,0,0.6);
+    }
+
+    h1 {
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <h1><i>Array</i></h1>
+
+    <p style="font-size: 25px; text-align: center;">Simulazione di Verifica</p>
+
+    <div id="container">
+        <p>Ultimo numero casuale generato: <b id="out">Ciao</b></p>
+        <p>Condizioni: </p>
+        <b id="pari">Fratello</b>
+        <br>
+        <b id="primo">Fratello</b>
+        <br>
+        <i>Doppio: <b id="doppio">Fratello</b></i>
+        <br>
+        <i>Metà: <b id="meta">Fratello</b></i>
+        <br>
+        <i>Complemento: <b id="complemento">Fratello</b></i>
+        <br>
+        <i>Somma: <b id="somma">Fratello</b></i>
+        <br>
+        <i>Moltiplicazione per 3.14: <b id="3.14">Fratello</b></i>
+    </div>
+
+<script>
+    setInterval(generatore,1000)
+    function generatore() {
+        let numeroCasuale = Math.floor(Math.random()*1000);
+        document.getElementById("out").innerHTML = numeroCasuale;
+        ifPari(numeroCasuale);
+        ifPrimo(numeroCasuale);
+        stampa(numeroCasuale);
+    }
+    function ifPari(num) {
+        if (num%2==0) {
+            document.getElementById("pari").innerHTML = "Il numero è pari.";
+        }
+        else {
+            document.getElementById("pari").innerHTML = "Il numero è dispari.";
+        }
+    }
+    function ifPrimo(num) {
+        let count=0;
+        for (let i=1;i<num;i++) {
+            if (num%i==0) {
+                count++;
+            }
+        }
+        if (count>2) {
+            document.getElementById("primo").innerHTML = "Il numero non è primo.";
+        }
+        else {
+            document.getElementById("primo").innerHTML = "Il numero è primo.";
+        }
+    }
+    function stampa(num) {
+        document.getElementById("doppio").innerHTML = num*2;
+        document.getElementById("meta").innerHTML = parseInt(num/2);
+        document.getElementById("complemento").innerHTML = 1000-num;
+        document.getElementById("somma").innerHTML = num+num-1+num+1;
+        document.getElementById("3.14").innerHTML = num*3.14;
+    }
+
+
+</script>
+</body>
+</html>
