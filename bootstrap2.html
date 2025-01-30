@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esempio Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: rgb(25, 0, 10);
+            color: rgb(255, 245, 250);
+        }
+    </style>
+  </head>
+  
+  <body>
+  
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="max-height: 500px;min-width: 100%;">
+        <div class="container">
+            <a class="navbar-brand" href="https://it.wikipedia.org/wiki/Intelligenza_artificiale">
+              <img src="https://static.wikia.nocookie.net/disney/images/2/2b/Wall-E.png/revision/latest?cb=20180518165947&path-prefix=it" alt="Logo" width="40" height="40" class="d-inline-block align-text-top">
+              L'intelligenza artificiale e la robotica
+            </a>
+          </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="margin: auto;">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 30px;margin-right: 50px;">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+      <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" >
+        <div class="carousel-inner" style="min-width: 100%;">
+          <div class="carousel-item active" style="object-fit: fill">
+            <img src="https://images.wallpapersden.com/image/download/surreal-psychedelic-landscape-amazing-ai-art_bmdlam6UmZqaraWkpJRobWllrWdma2U.jpg" class="d-block w-100" alt="..." style="max-height: 800px; min-height: 200px;">
+            <div class="carousel-caption d-none d-md-block">
+                <h3>Immagine generata da AI.</h3>
+              </div>
+          </div>
+          <div class="carousel-item">
+            <img src="https://preparatialfuturo.confindustria.it/wp-content/uploads/2020/09/Robotica-intelligente-6000x3000.jpg" class="d-block w-100" alt="..." style="max-height: 800px; min-height: 200px;">
+          </div>
+          <div class="carousel-item">
+            <img src="https://www.prosportstickers.com/wp-content/uploads/nc/t/irobot_wallpaper_sticker__80701.jpg" class="d-block w-100" alt="..." style="max-height: 800px; min-height: 200px;">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+   <div class="container">
+    <h1 style="margin-top: 25px;"><b>Intelligenza artificiale, robot ed evoluzione della tecnologia.</b></h1>
+    <h2 class="lead" style="margin-top: 50px;margin-bottom: 50px;">
+        Benvenuti nel mondo dell'Intelligenza Artificiale e della Robotica, due delle tecnologie più innovative e promettenti del nostro tempo. In un'epoca in cui il progresso tecnologico sta accelerando rapidamente, l'AI e la robotica stanno trasformando settori come la sanità, l'industria, l'intrattenimento e l'ambiente. Queste tecnologie non solo semplificano le operazioni quotidiane, ma aprono anche nuove possibilità per il futuro, migliorando l'efficienza, la sicurezza e la qualità della vita. Scopri come l'AI e la robotica stanno cambiando il nostro mondo e il modo in cui interagiamo con la tecnologia.
+    </h2>
+   </div>
+   <div class="container" style="text-align:center;">
+
+    <!-- Button trigger modal -->
+    <button type="button" style="background-color: blueviolet; max-height: 150px;max-width: 350px;"class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Esempio di utilità dell'AI, spiegato da un AI!
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: black;">L'utilità dell'Intelligenza Artificiale.</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="color: black;">
+            L'intelligenza artificiale è utile perché automatizza compiti, aumenta l'efficienza e migliora la precisione in settori come la sanità, l'industria e la ricerca scientifica. Aiuta anche a personalizzare esperienze utente, come nei consigli di acquisto o nei assistenti vocali. Inoltre, contribuisce alla sostenibilità, ottimizzando risorse e affrontando sfide ambientali. Nonostante i benefici, è fondamentale gestire le implicazioni etiche e sociali dell'AI.
+            <br>
+          <b>(scritto da ChatGPT)</b>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+            <!-- button type="button" class="btn btn-primary">Save changes</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+        
+    
+    <div class="container">
+    
+        <hr>
+        
+    <ul class="nav nav-tabs" id="myTab" role="tablist" >
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true" style="background-color: rgb(250,250,250);">AI</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false" style="background-color: rgb(250,250,250);">Robotica</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="background-color: rgb(250,250,250);">Sviluppo</button>
+      </li>
+      
+       <li class="nav-item dropdown" style="background-color: lightcoral;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Link</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="https://it.wikipedia.org/wiki/Intelligenza_artificiale">Wikipedia - AI</a></li>
+          <li><a class="dropdown-item" href="https://it.wikipedia.org/wiki/Robotica">Wikipedia - Robotica</a></li>
+          <li><a class="dropdown-item" href="https://chatgpt.com/">ChatGPT</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="https://openai.com/">OpenAI</a></li>
+        </ul>
+      </li>
+    
+    </ul>
+    <div class="tab-content" id="myTabContent" style="background-color: rgb(250,250,250); color: rgb(30, 30, 30);margin-bottom: 50px;">
+      <div class="tab-pane fade in show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0" style="margin-left: 15px;">
+      <h3>Cos'è l'"AI"?</h3>
+      L'intelligenza artificiale (IA) è un ramo dell'informatica che sviluppa sistemi in grado di eseguire compiti tipicamente umani, come il riconoscimento di immagini e il linguaggio naturale. Grazie al machine learning, l'IA può imparare dai dati e migliorare autonomamente. Le sue applicazioni spaziano dalla medicina all'automazione, ma solleva anche questioni etiche e sociali legate al suo utilizzo.
+      </div>
+      <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"  style="margin-left: 15px;">
+      <h3>Robotica</h3>
+      La robotica è un campo interdisciplinare che combina ingegneria, informatica e altre discipline per progettare e costruire robot, dispositivi autonomi in grado di eseguire compiti specifici. Questi robot possono essere programmati per svolgere attività complesse in settori come la produzione, la medicina, l'esplorazione spaziale e la logistica. Grazie ai progressi nella tecnologia e nell'intelligenza artificiale, i robot stanno diventando sempre più sofisticati, capaci di adattarsi e interagire con l'ambiente circostante in modo sempre più autonomo e preciso.
+      </div>
+      <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0" style="margin-left: 15px;">
+      <h3>Sviluppo</h3>
+      L'evoluzione dell'intelligenza artificiale e della robotica è stata strettamente legata, con progressi in uno che hanno alimentato innovazioni nell'altro. Inizialmente, i robot erano semplici macchine meccaniche programmabili per compiti ripetitivi, mentre l'IA si concentrava su sistemi che emulavano processi cognitivi umani. Con il tempo, l'integrazione dell'IA nella robotica ha permesso la creazione di robot sempre più autonomi e intelligenti, capaci di apprendere, adattarsi e interagire in modo dinamico con l'ambiente e gli esseri umani. Oggi, l'IA e la robotica sono utilizzate insieme in settori come la medicina, l'automazione industriale, l'assistenza alle persone anziane, la logistica e l'esplorazione spaziale, aprendo nuove possibilità in termini di efficienza, precisione e accessibilità.
+      </div>
+    </div>
+        
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>
