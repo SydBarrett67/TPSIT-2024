@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .col-3 {
+            transition: background-color 0.5s ease;
+            border-radius: 20px;
+            border: 1px solid black; 
+        }
+        body {
+            background-color: rgb(20,20,20);
+        }
+        .highlight {
+            background-color: yellow !important;
+        }
+        .highlight2 {
+            background-color: rgb(50,50,50) !important;
+        }
+        .error {
+            background-color: red !important;
+        }
+
+        /* Default Light Theme */
+        body {
+            background-color: #f8f9fa; /* Light background */
+            color: #000; /* Dark text */
+        }
+
+        /* Light theme for cells */
+        .col-3 {
+            background-color: lightblue;
+        }
+
+        .navbar, .navbar-brand, .dropdown-item {
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        /* Dark Theme */
+        body.dark-theme {
+            background-color: rgb(10,10,10); /* Dark background */
+            color: #fff; /* Light text */
+        }
+
+        /* Dark theme for cells */
+        body.dark-theme .col-3 {
+            background-color: rgb(20,20,20); /* Dark cells */
+            border: 1px solid #fff; /* Light border for contrast */
+        }
+
+        .navbar.dark-theme {
+            background-color: #222; /* Dark navbar */
+        }
+
+        .navbar.dark-theme .navbar-brand, .navbar.dark-theme .dropdown-item {
+            color: #fff; /* Light text for navbar */
+        }
+
+        /* Highlight colors for dark theme */
+        .dark-theme .highlight {
+            background-color: rgb(220,190,0) !important;
+        }
+
+        .dark-theme .highlight2 {
+            background-color: rgb(200,200,200) !important;
+        }
+
+        .dark-theme .error {
+            background-color: #d9534f !important;
+        }
+
+        body.red-theme {
+        background-color: rgb(60,0,0); /* Dark red background */
+        color: #fff; /* Light text */
+    }
+
+        /* Red theme for cells */
+        body.red-theme .col-3 {
+            background-color: rgb(150,30,0); /* Lighter red for cells */
+            border: 1px solid rgb(255,255,200); /* Light border for contrast */
+        }
+
+        /* Navbar red theme */
+        .navbar.red-theme {
+            background-color: #A52A2A; /* Red navbar */
+        }
+
+        .navbar.red-theme .navbar-brand, .navbar.red-theme .dropdown-item {
+            color: #fff; /* Light text for navbar */
+        }
+
+        /* Highlight colors for red theme */
+        .red-theme .highlight {
+            background-color: #FF6347 !important; 
+        }
+
+        .red-theme .highlight2 {
+            background-color: #FF4500 !important;
+        }
+
+        .red-theme .error {
+            background-color: #FF0000 !important;
+        }
+        body.green-theme {
+        background-color: rgb(0,50,0);
+        color: #fff; 
+        }
+        .green-theme .col-3 {
+            background-color: #228B22; 
+            border: 1px solid #fff; 
+        }
+        .green-theme .navbar {
+            background-color: #2E8B57;
+        }
+
+        .green-theme .navbar .navbar-brand, .green-theme .navbar .dropdown-item {
+            color: black; 
+        }
+
+        .green-theme .highlight {
+            background-color: #32CD32 !important; 
+        }
+
+        .green-theme .highlight2 {
+            background-color: #006400 !important; 
+        }
+
+        .green-theme .error {
+            background-color: #8B0000 !important;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid" style="height: 50px;">
+          <a class="navbar-brand" href="#">Memory Game</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Settings
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" onclick="temi()">Themes</a></li>
+                  <li><a class="dropdown-item" onclick="livello()">Difficoltà</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Alessandro
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="https://www.instagram.com/ale.diluca/">Instagram</a></li>
+                  <li><a class="dropdown-item" href="https://sydbarrett67.github.io/TPSIT-2024/">GitHub</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <div class="container" style="margin-top: 30px;">
+        <div style="text-align: center; font-size: 50px;">
+            Punteggio: <b id="Punteggio">0</b>
+        </div>
+    </div>
+    <div class="container">
+        <div style="text-align: center; font-size: 35px;">
+            <b id="out">Inizio.</b>
+            <br>
+            Level: <b id="level">Easy</b>
+            <br>
+            Remaining time: <b id="timer">NaN</b> seconds.
+        </div>
+    </div>
+    <div class="container-fluid" style="max-width: 800px; margin-top: 30px;">
+        <div class="row">
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" style=" min-height: 200px;" onclick="cliccaCella(this, 0)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 1)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 2)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 3)"></div>
+        </div>
+        <div class="row">
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" style="min-height: 200px;" onclick="cliccaCella(this, 4)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 5)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 6)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 7)"></div>
+        </div>
+        <div class="row">
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" style="min-height: 200px;" onclick="cliccaCella(this, 8)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 9)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 10)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 11)"></div>
+        </div>
+        <div class="row">
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" style="min-height: 200px;" onclick="cliccaCella(this, 12)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 13)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 14)"></div>
+            <div class="col-3 col-lg-3 col-md-3 col-sm-3" onclick="cliccaCella(this, 15)"></div>
+        </div>
+    </div>
+    
+    <button type="button" class="btn btn-outline-secondary" onclick="start()" style="font-size: larger; height: 80px; width: 350px; ;display: block; margin: 20px auto; padding: 10px 20px;">Inizia sequenza.</button>
+    <br>
+    <br>
+    <br>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-bottom">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">By Alessandro Di Luca</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+    </nav>
+
+    <script>
+        let sequenza = [];
+        let indiceSequenza = 0;
+        let inSequenza = false;
+        let lunghezzaSequenza = 1; 
+        let punteggio = 0;
+        let speed = 500;
+        let timer;
+        let scala=0;
+
+        function livello() {
+            if (speed==500) {
+                speed = 400;
+                document.getElementById("level").innerHTML = "Medium";
+            }
+            else if (speed==400) {
+                speed = 200;
+                document.getElementById("level").innerHTML = "Hard";
+            }
+            else if (speed==200) {
+                speed = 100;
+                document.getElementById("level").innerHTML = "Impossible";
+            }
+            else if (speed==100) {
+                speed = 500;
+                document.getElementById("level").innerHTML = "Easy";
+            }
+        }
+        
+        function start() {
+            iniziaSequenza();
+            setInterval(crono,1000);
+        }
+
+        function iniziaSequenza() {
+            const celle = document.querySelectorAll('.container-fluid .row .col-3');
+            indiceSequenza = 0;
+            inSequenza = true;
+            if (timer==0) {
+                reset();
+                return;
+            }
+            if (sequenza.length==10+scala && document.getElementById("level").innerHTML != "Impossible") {
+                livello();
+                scala+=10;
+            }
+            sequenza.push(Math.floor(Math.random() * celle.length));
+
+            let i = 0;
+            const intervallo = setInterval(() => {
+                celle.forEach(cella => cella.classList.remove('highlight'));
+                celle[sequenza[i]].classList.add('highlight');
+
+                i++;
+                if (i >= sequenza.length) {
+                    clearInterval(intervallo);
+                    inSequenza = false;
+                    setTimeout(() => {
+                        celle[sequenza[sequenza.length - 1]].classList.remove('highlight');
+                    }, speed);
+                }
+            }, speed);
+            reset();
+        }
+
+        function reset() {
+            if (document.getElementById("level").innerHTML == "Easy") {
+                timer = 20;
+            }
+            else if (document.getElementById("level").innerHTML == "Medium"){
+                timer = 15;
+            }
+            else if (document.getElementById("level").innerHTML == "Hard"){
+                timer = 10;
+            }
+            else if (document.getElementById("level").innerHTML == "Impossible"){
+                timer = 5;
+            }
+        }
+        
+        function crono() {
+            document.getElementById("timer").innerHTML = timer;
+            if (timer==0) {
+                timer=0;
+                document.getElementById("out").innerHTML = "Tempo esaurito! Hai perso.";
+            }
+            else {
+                timer--;
+            }
+        }
+
+        function cliccaCella(elemento, index) {
+            if (inSequenza) return; 
+            const celle = document.querySelectorAll('.container-fluid .row .col-3');
+            if (sequenza[indiceSequenza] === index) {
+                punteggio++;
+                document.getElementById("Punteggio").innerHTML = punteggio;
+                elemento.classList.add('highlight2');
+                indiceSequenza++;
+                
+                setTimeout(() => {
+                    elemento.classList.remove('highlight2');
+                    if (indiceSequenza === sequenza.length) {
+                        document.getElementById("out").innerText = "Sequenza corretta.";
+                        lunghezzaSequenza++;
+                        indiceSequenza = 0;
+                        iniziaSequenza();
+                    }
+                }, speed); 
+            } else {
+                punteggio = 0;
+                elemento.classList.add('error');
+                document.getElementById("Punteggio").innerHTML = punteggio;
+                elemento.classList.add('error');
+                document.getElementById("out").innerText = "Hai sbagliato.";
+                indiceSequenza = 0;
+                lunghezzaSequenza = 1;
+                scala=0;
+                sequenza = [];
+                celle.forEach(cella => cella.classList.remove('highlight'));
+                celle.forEach(cella => cella.classList.remove('error'));
+            }
+        }
+        
+        function temi() {
+            // Get the current theme from localStorage
+            const currentTheme = localStorage.getItem("theme");
+
+            // Toggle between the themes
+            if (currentTheme === "dark") {
+                document.body.classList.remove("dark-theme");
+                document.body.classList.add("light-theme");
+                localStorage.setItem("theme", "light");
+            } else if (currentTheme === "light") {
+                document.body.classList.remove("light-theme");
+                document.body.classList.add("red-theme");
+                localStorage.setItem("theme", "red");
+            } else if (currentTheme === "red") {
+                document.body.classList.remove("red-theme");
+                document.body.classList.add("green-theme");
+                localStorage.setItem("theme", "green");
+            } else {
+                document.body.classList.remove("green-theme");
+                document.body.classList.add("dark-theme");
+                localStorage.setItem("theme", "dark");
+            }
+        }
+
+        window.onload = function() {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-theme");
+            } else if (savedTheme === "light") {
+                document.body.classList.add("light-theme");
+            } else if (savedTheme === "red") {
+                document.body.classList.add("red-theme");
+            } else if (savedTheme === "green") {
+                document.body.classList.add("green-theme");
+            }
+        };
+    </script>
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    
+</body>
+</html>
