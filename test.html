@@ -76,8 +76,7 @@
         body.red-theme {
         background-color: rgb(60,0,0); /* Dark red background */
         color: #fff; /* Light text */
-    }
-
+        }
         /* Red theme for cells */
         body.red-theme .col-3 {
             background-color: rgb(150,30,0); /* Lighter red for cells */
@@ -105,6 +104,39 @@
         .red-theme .error {
             background-color: #FF0000 !important;
         }
+        
+        body.blue-theme {
+        background-color: rgb(0,0,60); /* Dark red background */
+        color: #fff; /* Light text */
+        }
+        /* Red theme for cells */
+        body.blue-theme .col-3 {
+            background-color: rgb(0,30,150); /* Lighter red for cells */
+            border: 1px solid rgb(0,0,0); /* Light border for contrast */
+        }
+
+        /* Navbar red theme */
+        .navbar.blue-theme {
+            background-color: rgb(0,30,130); /* Red navbar */
+        }
+
+        .navbar.blue-theme .navbar-brand, .navbar.blue-theme .dropdown-item {
+            color: #fff; /* Light text for navbar */
+        }
+
+        /* Highlight colors for red theme */
+        .blue-theme .highlight {
+            background-color: rgb(0,0,200) !important; 
+        }
+
+        .blue-theme .highlight2 {
+            background-color: rgb(50,0,200) !important;
+        }
+
+        .blue-theme .error {
+            background-color: #FF0000 !important;
+        }
+
         body.green-theme {
         background-color: rgb(0,50,0);
         color: #fff; 
@@ -167,6 +199,11 @@
           </div>
         </div>
       </nav>
+    <div class="container-fluid" style="margin: 35px;">
+        <div class="col-2">
+            <h4>High score della sessione: <b id="hs">0</b></h4>
+        </div>
+    </div>
     <div class="container" style="margin-top: 30px;">
         <div style="text-align: center; font-size: 50px;">
             Punteggio: <b id="Punteggio">0</b>
@@ -178,7 +215,7 @@
             <br>
             Level: <b id="level">Easy</b>
             <br>
-            Remaining time: <b id="timer">NaN</b> seconds.
+            Remaining time: <b id="timer">...</b> seconds.
         </div>
     </div>
     <div class="container-fluid" style="max-width: 400px; margin-top: 30px;">
@@ -228,8 +265,9 @@
         let lunghezzaSequenza = 1; 
         let punteggio = 0;
         let speed = 500;
-        let timer;
+        let cronometro;
         let scala=0;
+        let highScore=0;
 
         function livello() {
             if (speed==500) {
@@ -252,20 +290,25 @@
         
         function start() {
             iniziaSequenza();
-            setInterval(crono,1000);
+            cronometro=setInterval(crono,1000);
         }
 
         function iniziaSequenza() {
             const celle = document.querySelectorAll('.container-fluid .row .col-3');
             indiceSequenza = 0;
             inSequenza = true;
+            if (punteggio>highScore) {
+                highScore = punteggio;
+                document.getElementById("hs").innerHTML = highScore;
+            }
             if (timer==0) {
+                clearTimeout(cronometro);
                 reset();
                 return;
             }
-            if (sequenza.length==10+scala && document.getElementById("level").innerHTML != "Impossible") {
+            if (sequenza.length==5+scala && document.getElementById("level").innerHTML != "Impossible") {
                 livello();
-                scala+=10;
+                scala+=5;
             }
             sequenza.push(Math.floor(Math.random() * celle.length));
 
@@ -304,7 +347,8 @@
         function crono() {
             document.getElementById("timer").innerHTML = timer;
             if (timer==0) {
-                timer=0;
+                clearInterval(cronometro);
+                reset();
                 document.getElementById("out").innerHTML = "Tempo esaurito! Hai perso.";
             }
             else {
@@ -340,6 +384,7 @@
                 lunghezzaSequenza = 1;
                 scala=0;
                 sequenza = [];
+                clearInterval(cronometro);
                 celle.forEach(cella => cella.classList.remove('highlight'));
                 celle.forEach(cella => cella.classList.remove('error'));
             }
@@ -362,8 +407,12 @@
                 document.body.classList.remove("red-theme");
                 document.body.classList.add("green-theme");
                 localStorage.setItem("theme", "green");
-            } else {
+            } else if (currentTheme === "green") {
                 document.body.classList.remove("green-theme");
+                document.body.classList.add("blue-theme");
+                localStorage.setItem("theme", "blue");
+            } else {
+                document.body.classList.remove("blue-theme");
                 document.body.classList.add("dark-theme");
                 localStorage.setItem("theme", "dark");
             }
@@ -379,6 +428,8 @@
                 document.body.classList.add("red-theme");
             } else if (savedTheme === "green") {
                 document.body.classList.add("green-theme");
+            } else if (savedTheme === "blue") {
+                document.body.classList.add("blue-theme");
             }
         };
     </script>
