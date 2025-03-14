@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Results</title>
+    <style>
+        body {
+            background-color: rgb(20, 20, 20);
+            color: white;
+            text-align: center;
+            padding-top: 10%;
+            font-family: Arial, sans-serif;
+        }
+        h2 {
+            font-size: 3em;
+        }
+        p {
+            font-size: 1.5em;
+        }
+        .results {
+            margin: 0 auto;
+            max-width: 600px;
+            background-color: rgba(40, 40, 40, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="results">
+        <h2>Your Results</h2>
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+        <p><strong>Total Time:</strong> <span id="totalTime"></span> seconds</p>
+        <p><strong>Clicks:</strong> <span id="clicks"></span></p>
+        <p><strong>Average Time Between Clicks:</strong> <span id="avgTime"></span> seconds</p>
+    </div>
+
+    <script>
+        // Retrieve values from localStorage
+        const name = localStorage.getItem('name');
+        const email = localStorage.getItem('email');
+        const totalTime = localStorage.getItem('totalTime');
+        const clicks = localStorage.getItem('clicks');
+        const avgTime = localStorage.getItem('avgTime');
+
+        // Display the values
+        document.getElementById('name').innerText = name;
+        document.getElementById('email').innerText = email;
+        document.getElementById('totalTime').innerText = totalTime;
+        document.getElementById('clicks').innerText = clicks;
+        document.getElementById('avgTime').innerText = avgTime;
+
+        // Optionally clear the stored data after displaying
+        localStorage.clear();
+    </script>
+</body>
+</html>

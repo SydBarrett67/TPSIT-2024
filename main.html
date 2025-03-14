@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Millisecond Timer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJxvYbLQ4qgA0p8eRZsBd5aDZn0m6R3gxdu5Y04rEsZynJbHek0u7f+e/ZG9" crossorigin="anonymous">
+    <style>
+        #game-area {
+            position: relative;
+            height: 80vh;
+            width: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
+        #bottone {
+            height: 150px;
+            width: 150px;
+            border-radius: 25px;
+            position: absolute;
+            transition: background-color 1s ease;
+            transition: transform 0.2s ease;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #bottone:active {
+            transform: scale(0);
+            transition: all 0.5s ease;
+        }
+        body {
+            background-color: rgb(20,20,20);
+            color: white;
+            overflow: hidden;
+            padding: 20px;
+        }
+        #stats {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 18px;
+            background-color: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game-area">
+        <button id="bottone" onclick="handleClick(this)"></button>
+    </div>
+    <div id="stats">
+        Secondi: <b id="outS">0</b>
+        <br>
+        Millisecondi: <b id="outMS">000</b>
+        <br>
+        Clicks: <b id="outClicks">0</b>
+    </div>
+
+    <script>
+        let clicker = 0;
+        let ms = 0;
+        let s = 0;
+        let started = false;
+        let displayLastTime = performance.now(); // For display updates
+        let clickLastTime = null; // For between-click time measurement
+        let totalTime = 0; // Store total time for calculating average
+        const maxClicks = 10; // Stop after 10 clicks
+        let name, email; // Store user's name and email
+        let timeBetweenClicks = []; // Array to store time between each click
+        let newTab; // To store reference to the new tab
+        let gameArea; // Reference to game area
+        let button; // Reference to button
+
+        // Initialize on window load
+        window.onload = function() {
+            gameArea = document.getElementById("game-area");
+            button = document.getElementById("bottone");
+            // Initial position
+            moveButton();
+            start();
+        };
+
+        function moveButton() {
+            // Get game area dimensions
+            const gameWidth = gameArea.offsetWidth;
+            const gameHeight = gameArea.offsetHeight;
+            const buttonWidth = button.offsetWidth;
+            const buttonHeight = button.offsetHeight;
+            
+            // Calculate random position (ensuring the button stays fully within the game area)
+            const maxX = gameWidth - buttonWidth;
+            const maxY = gameHeight - buttonHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            // Apply new position
+            button.style.left = randomX + "px";
+            button.style.top = randomY + "px";
+            
+            // Random background color
+            const r = Math.floor(Math.random() * 256); 
+            const g = Math.floor(Math.random() * 256); 
+            const b = Math.floor(Math.random() * 256); 
+            button.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function handleClick(elemento) {
+            const currentTime = performance.now();
+            
+            if (clicker >= maxClicks) {
+                stoptimer();  // Stop the timer after 10 clicks
+                openNewTab(); // Open the new tab with the elapsed time
+                return; // Don't do anything else if clicks limit reached
+            }
+            
+            // Move the button to a new position
+            moveButton();
+            
+            // Start timer on first click
+            if (!started) {
+                starttimer();
+                started = true;
+                clickLastTime = currentTime; // Initialize click timer
+            } else {
+                // Calculate time between clicks (only after first click)
+                const timeDiff = currentTime - clickLastTime;
+                timeBetweenClicks.push(timeDiff);
+                totalTime += timeDiff;
+                clickLastTime = currentTime;
+            }
+            
+            // Increment click counter
+            clicker++;
+            document.getElementById("outClicks").innerHTML = clicker;
+        }
+
+        function start() {
+            name = prompt("Please enter your name", "...");
+            email = prompt("Please enter your email", "...");
+            alert("Click the square as quickly as possible! It will move after each click.");
+        }
+
+        function display() {
+            const currentTime = performance.now();
+            const elapsed = currentTime - displayLastTime;  // Time elapsed in milliseconds
+            displayLastTime = currentTime;
+
+            // Increment milliseconds for every 1 millisecond
+            ms += Math.floor(elapsed); 
+
+            // Reset ms after reaching 1000 (1 second) and increment seconds
+            if (ms >= 1000) {
+                ms = 0;
+                s++;
+            }
+
+            // Update the display
+            document.getElementById("outS").innerHTML = s;
+            document.getElementById("outMS").innerHTML = ms.toString().padStart(3, '0'); // Show ms as 3 digits
+
+            // Request the next frame, ensures smoother update
+            if (clicker < maxClicks) {
+                requestAnimationFrame(display); // Continue updating if not 10 clicks
+            }
+        }
+
+        function starttimer() {
+            if (!started) {
+                displayLastTime = performance.now(); // Reset start time
+                display(); // Start the display function
+            }
+        }
+
+        function stoptimer() {
+            // Stop the timer
+            console.log('Timer stopped after 10 clicks');
+        }
+
+        function openNewTab() {
+            // Calculate the average time between clicks (in seconds)
+            const avgTime = timeBetweenClicks.length > 0 ? 
+                (totalTime / timeBetweenClicks.length / 1000).toFixed(3) : 0; // Convert to seconds
+
+            // Store values in localStorage to pass to output.html
+            localStorage.setItem('name', name);
+            localStorage.setItem('email', email);
+            localStorage.setItem('totalTime', `${s}.${ms.toString().padStart(3, '0')}`);
+            localStorage.setItem('clicks', clicker);
+            localStorage.setItem('avgTime', avgTime);
+
+            // Open output.html in a new tab
+            window.open('output.html', '_blank');
+        }
+
+    </script>
+</body>
+</html>
