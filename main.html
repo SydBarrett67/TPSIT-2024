@@ -55,6 +55,8 @@
         Millisecondi: <b id="outMS">000</b>
         <br>
         Clicks: <b id="outClicks">0</b>
+        <br>
+        Level: <b id="level">1</b>
     </div>
 
     <script>
@@ -62,43 +64,39 @@
         let ms = 0;
         let s = 0;
         let started = false;
-        let displayLastTime = performance.now(); // For display updates
-        let clickLastTime = null; // For between-click time measurement
-        let totalTime = 0; // Store total time for calculating average
-        const maxClicks = 10; // Stop after 10 clicks
-        let name, email; // Store user's name and email
-        let timeBetweenClicks = []; // Array to store time between each click
-        let newTab; // To store reference to the new tab
-        let gameArea; // Reference to game area
-        let button; // Reference to button
+        let displayLastTime = performance.now();
+        let clickLastTime = null;
+        let totalTime = 0; 
+        const maxClicks = 10;
+        let name, email; 
+        let timeBetweenClicks = [];
+        let newTab; 
+        let gameArea;
+        let button;
+        let level = 1;
+        let buttonVisibleUntil = 0;
 
-        // Initialize on window load
         window.onload = function() {
             gameArea = document.getElementById("game-area");
             button = document.getElementById("bottone");
-            // Initial position
             moveButton();
             start();
         };
 
         function moveButton() {
-            // Get game area dimensions
             const gameWidth = gameArea.offsetWidth;
             const gameHeight = gameArea.offsetHeight;
             const buttonWidth = button.offsetWidth;
             const buttonHeight = button.offsetHeight;
-            
-            // Calculate random position (ensuring the button stays fully within the game area)
+        
             const maxX = gameWidth - buttonWidth;
             const maxY = gameHeight - buttonHeight;
             const randomX = Math.floor(Math.random() * maxX);
             const randomY = Math.floor(Math.random() * maxY);
             
-            // Apply new position
             button.style.left = randomX + "px";
             button.style.top = randomY + "px";
             
-            // Random background color
             const r = Math.floor(Math.random() * 256); 
             const g = Math.floor(Math.random() * 256); 
             const b = Math.floor(Math.random() * 256); 
@@ -108,91 +106,126 @@
         function handleClick(elemento) {
             const currentTime = performance.now();
             
+            // If button is clicked after reaching max clicks, stop and open a new tab
             if (clicker >= maxClicks) {
-                stoptimer();  // Stop the timer after 10 clicks
-                openNewTab(); // Open the new tab with the elapsed time
-                return; // Don't do anything else if clicks limit reached
+                stoptimer(); 
+                openNewTab();
+                return; 
             }
-            
-            // Move the button to a new position
-            moveButton();
-            
-            // Start timer on first click
-            if (!started) {
-                starttimer();
-                started = true;
-                clickLastTime = currentTime; // Initialize click timer
-            } else {
-                // Calculate time between clicks (only after first click)
-                const timeDiff = currentTime - clickLastTime;
-                timeBetweenClicks.push(timeDiff);
-                totalTime += timeDiff;
-                clickLastTime = currentTime;
+
+            if (currentTime < buttonVisibleUntil) {
+                moveButton();
+                // Change the background color after each click
+                document.body.style.backgroundColor = `rgb(${Math.floor(Math.random() * 150)}, ${Math.floor(Math.random() * 100)}, ${Math.floor(Math.random() * 150)})`;
+
+                if (!started) {
+                    starttimer();
+                    started = true;
+                    clickLastTime = currentTime; 
+                } else {
+                    const timeDiff = currentTime - clickLastTime;
+                    timeBetweenClicks.push(timeDiff);
+                    totalTime += timeDiff;
+                    clickLastTime = currentTime;
+                }
+                
+                clicker++;
+                document.getElementById("outClicks").innerHTML = clicker;
+                
+                if (clicker % 2 === 0 && level < 5) {
+                    level++;
+                    document.getElementById("level").innerHTML = level;
+                }
+
+                // Adjust button visibility duration based on level
+                let visibilityDuration = 0;
+                switch (level) {
+                    case 1:
+                        visibilityDuration = Infinity; // Stay visible indefinitely
+                        break;
+                    case 2:
+                        visibilityDuration = 1000; // 1 second
+                        break;
+                    case 3:
+                        visibilityDuration = 700; // 0.7 seconds
+                        break;
+                    case 4:
+                        visibilityDuration = 500; // 0.5 seconds
+                        break;
+                    case 5:
+                        visibilityDuration = 300; // 0.3 seconds
+                        break;
+                    default:
+                        visibilityDuration = 500; // Default to 0.5 seconds if no level matches
+                        break;
+                }
+
+                // Set the button's next visibility time
+                buttonVisibleUntil = currentTime + visibilityDuration; 
             }
-            
-            // Increment click counter
-            clicker++;
-            document.getElementById("outClicks").innerHTML = clicker;
         }
 
         function start() {
-            name = prompt("Please enter your name", "...");
-            email = prompt("Please enter your email", "...");
-            alert("Click the square as quickly as possible! It will move after each click.");
+            name = prompt("Nome:", "...");
+            email = prompt("Email", "...");
         }
 
         function display() {
             const currentTime = performance.now();
-            const elapsed = currentTime - displayLastTime;  // Time elapsed in milliseconds
+            const elapsed = currentTime - displayLastTime;
             displayLastTime = currentTime;
 
-            // Increment milliseconds for every 1 millisecond
             ms += Math.floor(elapsed); 
 
-            // Reset ms after reaching 1000 (1 second) and increment seconds
             if (ms >= 1000) {
                 ms = 0;
                 s++;
             }
 
-            // Update the display
             document.getElementById("outS").innerHTML = s;
-            document.getElementById("outMS").innerHTML = ms.toString().padStart(3, '0'); // Show ms as 3 digits
+            document.getElementById("outMS").innerHTML = ms.toString().padStart(3, '0');
 
-            // Request the next frame, ensures smoother update
             if (clicker < maxClicks) {
-                requestAnimationFrame(display); // Continue updating if not 10 clicks
+                requestAnimationFrame(display);
             }
         }
 
         function starttimer() {
             if (!started) {
-                displayLastTime = performance.now(); // Reset start time
-                display(); // Start the display function
+                displayLastTime = performance.now(); 
+                display(); 
             }
         }
 
         function stoptimer() {
-            // Stop the timer
-            console.log('Timer stopped after 10 clicks');
+            console.log('');
         }
 
         function openNewTab() {
-            // Calculate the average time between clicks (in seconds)
             const avgTime = timeBetweenClicks.length > 0 ? 
-                (totalTime / timeBetweenClicks.length / 1000).toFixed(3) : 0; // Convert to seconds
+                (totalTime / timeBetweenClicks.length / 1000).toFixed(3) : 0;
 
-            // Store values in localStorage to pass to output.html
             localStorage.setItem('name', name);
             localStorage.setItem('email', email);
             localStorage.setItem('totalTime', `${s}.${ms.toString().padStart(3, '0')}`);
             localStorage.setItem('clicks', clicker);
             localStorage.setItem('avgTime', avgTime);
 
-            // Open output.html in a new tab
             window.open('output.html', '_blank');
         }
 
+        function moveButtonIfNotClicked(currentTime) {
+            if (currentTime >= buttonVisibleUntil) {
+                // If button was not clicked in time, move it to a new random position
+                moveButton();
+                buttonVisibleUntil = currentTime + 500; // Reset visibility timer for next appearance
+            }
+        }
+
+        window.setInterval(() => {
+            // Regular check every 100ms if the button should move (after being visible for the specified time)
+            moveButtonIfNotClicked(performance.now());
+        }, 100);
     </script>
 </body>
 </html>
