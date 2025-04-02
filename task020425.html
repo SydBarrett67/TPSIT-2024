@@ -41,7 +41,7 @@
     <script>
         let arr = [];
         let scala = 0;
-
+        let size = 0;
         function generaNumeri() {
             const min = parseInt(document.getElementById('min').value, 10 );
             const max = parseInt(document.getElementById('max').value, 10);
@@ -56,6 +56,7 @@
                 let n = Math.floor(Math.random() * (max - min + 1)) + min;
                 numeri += n + " ";
                 arr[i] = n;
+                size++;
                 if (i % 50 === 49) numeri += "\n";
             }
             
@@ -70,7 +71,7 @@
                 sum += arr[i];
             }
             let median = parseInt(sum / 50);
-            document.getElementById("mediaOut").textContent = "Media numeri da "+scala+" a "+(scala+50)+" (su "+arr.lenght+"): "+median;
+            document.getElementById("mediaOut").textContent = "Media numeri da "+scala+" a "+(scala+50)+" (su "+size+"): "+median;
         }
 
     </script>
