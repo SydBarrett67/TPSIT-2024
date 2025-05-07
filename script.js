@@ -170,25 +170,29 @@ function clearFullLines() {
 
     if (rowsToClear.length === 0) return;
 
-    // Clear the full lines
-    rowsToClear.forEach(y => {
-        for (let x = 0; x < COLS; x++) {
-            boxes[y][x].style.backgroundColor = "white";
-        }
-    });
-
-    // Shift the rows above down
+    // Clear the full lines and shift down all rows above
     setTimeout(() => {
+        // First clear the lines
         rowsToClear.forEach(y => {
-            for (let moveY = y; moveY > 0; moveY--) {
-                for (let x = 0; x < COLS; x++) {
-                    lockedCells[moveY][x] = lockedCells[moveY - 1][x];
-                    boxes[moveY][x].style.backgroundColor = boxes[moveY - 1][x].style.backgroundColor;
-                }
+            for (let x = 0; x < COLS; x++) {
+                boxes[y][x].style.backgroundColor = "white";
             }
         });
 
-        // Clear the top row after shifting
+        // Then shift down the rows above the cleared lines
+        for (let y = rowsToClear[0]; y >= 1; y--) {
+            for (let x = 0; x < COLS; x++) {
+                if (lockedCells[y - 1][x]) {
+                    lockedCells[y][x] = lockedCells[y - 1][x];
+                    boxes[y][x].style.backgroundColor = boxes[y - 1][x].style.backgroundColor;
+                } else {
+                    lockedCells[y][x] = false;
+                    boxes[y][x].style.backgroundColor = "#0d47a1";
+                }
+            }
+        }
+
+        // Finally, clear the topmost row
         for (let x = 0; x < COLS; x++) {
             lockedCells[0][x] = false;
             boxes[0][x].style.backgroundColor = "#0d47a1";
