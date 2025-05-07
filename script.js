@@ -171,33 +171,33 @@ function clearFullLines() {
     if (rowsToClear.length === 0) return;
 
     // Clear the full lines and shift down all rows above
-    rowsToClear.forEach(y => {
-        // First clear the full line
-        for (let x = 0; x < COLS; x++) {
-            boxes[y][x].style.backgroundColor = "white";
-            lockedCells[y][x] = false;
-        }
-    });
+    setTimeout(() => {
+        // First clear the lines
+        rowsToClear.forEach(y => {
+            for (let x = 0; x < COLS; x++) {
+                boxes[y][x].style.backgroundColor = "white";
+            }
+        });
 
-    // Shift the rows down
-    for (let y = rowsToClear[0]; y >= 1; y--) {
-        for (let x = 0; x < COLS; x++) {
-            // Shift down the row above the cleared one
-            if (lockedCells[y - 1][x]) {
-                lockedCells[y][x] = lockedCells[y - 1][x];
-                boxes[y][x].style.backgroundColor = boxes[y - 1][x].style.backgroundColor;
-            } else {
-                lockedCells[y][x] = false;
-                boxes[y][x].style.backgroundColor = "#0d47a1";
+        // Then shift down the rows above the cleared lines
+        for (let y = rowsToClear[0]; y >= 1; y--) {
+            for (let x = 0; x < COLS; x++) {
+                if (lockedCells[y - 1][x]) {
+                    lockedCells[y][x] = lockedCells[y - 1][x];
+                    boxes[y][x].style.backgroundColor = boxes[y - 1][x].style.backgroundColor;
+                } else {
+                    lockedCells[y][x] = false;
+                    boxes[y][x].style.backgroundColor = "#0d47a1";
+                }
             }
         }
-    }
 
-    // Clear the topmost row
-    for (let x = 0; x < COLS; x++) {
-        lockedCells[0][x] = false;
-        boxes[0][x].style.backgroundColor = "#0d47a1";
-    }
+        // Finally, clear the topmost row
+        for (let x = 0; x < COLS; x++) {
+            lockedCells[0][x] = false;
+            boxes[0][x].style.backgroundColor = "#0d47a1";
+        }
+    }, 300); // Flash delay in milliseconds
 
     // Update score based on cleared lines
     score += rowsToClear.length * 100;
@@ -258,4 +258,55 @@ function generateBlock() {
 
 function moveBlockDown() {
     if (isGameOver) return;
-   
+    const canMove = currentBlock.every(({ x, y }) => {
+        const nextY = y + 1;
+        return nextY < ROWS && !isOccupied(nextY, x);
+    });
+
+    if (!canMove) {
+        lockBlock();
+        generateBlock();
+        return;
+    }
+
+    currentBlock.forEach(({ x, y }) => {
+        boxes[y][x].style.backgroundColor = "#0d47a1";
+    });
+
+    currentBlock = currentBlock.map(({ x, y }) => ({ x, y: y + 1 }));
+
+    currentBlock.forEach(({ x, y }) => {
+        boxes[y][x].style.backgroundColor = currentColor;
+    });
+}
+
+function isOccupied(y, x) {
+    if (y >= ROWS || x < 0 || x >= COLS) return true;
+    return lockedCells[y][x];
+}
+
+function lockBlock() {
+    currentBlock.forEach(({ x, y }) => {
+        boxes[y][x].style.backgroundColor = currentColor;
+        lockedCells[y][x] = true;
+    });
+
+    clearFullLines();
+}
+
+document.getElementById("restart_btn").addEventListener("click", restartGame);
+
+function restartGame() {
+    clearInterval(fallInterval);
+    score = 0;
+    isGameOver = false;
+    document.getElementById("score_display").innerText = "0";
+
+    for (let y = 0; y < ROWS; y++) {
+        for (let x = 0; x < COLS; x++) {
+            boxes[y][x].style.backgroundColor = "#0d47a1";
+            lockedCells[y][x] = false;
+        }
+    }
+    generateBlock();
+}
