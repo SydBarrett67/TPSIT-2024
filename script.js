@@ -14,30 +14,30 @@ let isGameOver = false;
 const shapes = {
     I: [[1, 1, 1, 1]],
     O: [
-    [1, 1],
-    [1, 1]
+        [1, 1],
+        [1, 1]
     ],
     T: [
-    [0, 1, 0],
-    [1, 1, 1]
+        [0, 1, 0],
+        [1, 1, 1]
     ],
     L: [
-    [1, 0],
-    [1, 0],
-    [1, 1]
+        [1, 0],
+        [1, 0],
+        [1, 1]
     ],
     J: [
-    [0, 1],
-    [0, 1],
-    [1, 1]
+        [0, 1],
+        [0, 1],
+        [1, 1]
     ],
     S: [
-    [0, 1, 1],
-    [1, 1, 0]
+        [0, 1, 1],
+        [1, 1, 0]
     ],
     Z: [
-    [1, 1, 0],
-    [0, 1, 1]
+        [1, 1, 0],
+        [0, 1, 1]
     ]
 };
 
@@ -141,25 +141,27 @@ function createGrid() {
     const board = document.getElementById("game_board");
 
     for (let j = 0; j < ROWS; j++) {
-    boxes[j] = [];
-    for (let i = 0; i < COLS; i++) {
-        const box = document.createElement("div");
-        box.className = "box";
-        box.style.left = i * BOX_SIZE + "px";
-        box.style.top = j * BOX_SIZE + "px";
-        board.appendChild(box);
-        boxes[j][i] = box;
-    }
+        boxes[j] = [];
+        for (let i = 0; i < COLS; i++) {
+            const box = document.createElement("div");
+            box.className = "box";
+            box.style.left = i * BOX_SIZE + "px";
+            box.style.top = j * BOX_SIZE + "px";
+            board.appendChild(box);
+            boxes[j][i] = box;
+        }
     }
 
     if (isDown) {
-    generateBlock();
-    isDown = false;
+        generateBlock();
+        isDown = false;
     }
 }
+
 function clearFullLines() {
     let rowsToClear = [];
 
+    // Check for full lines
     for (let y = ROWS - 1; y >= 0; y--) {
         if (lockedCells[y].every(cell => cell)) {
             rowsToClear.push(y);
@@ -168,37 +170,34 @@ function clearFullLines() {
 
     if (rowsToClear.length === 0) return;
 
+    // Clear the full lines
     rowsToClear.forEach(y => {
         for (let x = 0; x < COLS; x++) {
             boxes[y][x].style.backgroundColor = "white";
         }
     });
 
-
+    // Shift the rows above down
     setTimeout(() => {
         rowsToClear.forEach(y => {
-            for (let x = 0; x < COLS; x++) {
-                boxes[y][x].style.backgroundColor = "#0d47a1";
-            }
-
             for (let moveY = y; moveY > 0; moveY--) {
                 for (let x = 0; x < COLS; x++) {
                     lockedCells[moveY][x] = lockedCells[moveY - 1][x];
                     boxes[moveY][x].style.backgroundColor = boxes[moveY - 1][x].style.backgroundColor;
                 }
             }
-
-            for (let x = 0; x < COLS; x++) {
-                lockedCells[0][x] = false;
-                boxes[0][x].style.backgroundColor = "#0d47a1";
-            }
         });
+
+        // Clear the top row after shifting
+        for (let x = 0; x < COLS; x++) {
+            lockedCells[0][x] = false;
+            boxes[0][x].style.backgroundColor = "#0d47a1";
+        }
     }, 300); // Flash delay in milliseconds
 
-    if (rowsToClear.length > 0) {
-        score += rowsToClear.length * 100;
-        document.getElementById("score_display").innerText = score;
-    }
+    // Update score based on cleared lines
+    score += rowsToClear.length * 100;
+    document.getElementById("score_display").innerText = score;
 }
 
 function generateBlock() {
@@ -209,22 +208,22 @@ function generateBlock() {
     currentShapeMatrix = randomShape;
 
     switch (randomShapeName) {
-    case "I":
-        currentColor = "red"; break;
-    case "O":
-        currentColor = "violet"; break;
-    case "T":
-        currentColor = "yellow"; break;
-    case "L":
-        currentColor = "white"; break;
-    case "J":
-        currentColor = "gold"; break;
-    case "S":
-        currentColor = "green"; break;
-    case "Z":
-        currentColor = "brown"; break;
-    default:
-        currentColor = "white";
+        case "I":
+            currentColor = "red"; break;
+        case "O":
+            currentColor = "violet"; break;
+        case "T":
+            currentColor = "yellow"; break;
+        case "L":
+            currentColor = "white"; break;
+        case "J":
+            currentColor = "gold"; break;
+        case "S":
+            currentColor = "green"; break;
+        case "Z":
+            currentColor = "brown"; break;
+        default:
+            currentColor = "white";
     }
 
     const offsetX = Math.floor((COLS - randomShape[0].length) / 2);
@@ -235,14 +234,14 @@ function generateBlock() {
             if (randomShape[y][x] === 1) {
                 const gridY = offsetY + y;
                 const gridX = offsetX + x;
-    
+
                 if (lockedCells[gridY]?.[gridX]) {
                     clearInterval(fallInterval);
                     isGameOver = true;
                     alert("Game Over!\nFinal Score: " + score);
                     return;
                 }
-    
+
                 boxes[gridY][gridX].style.backgroundColor = currentColor;
                 currentBlock.push({ x: gridX, y: gridY });
             }
@@ -273,7 +272,7 @@ function moveBlockDown() {
     currentBlock = currentBlock.map(({ x, y }) => ({ x, y: y + 1 }));
 
     currentBlock.forEach(({ x, y }) => {
-    boxes[y][x].style.backgroundColor = currentColor;
+        boxes[y][x].style.backgroundColor = currentColor;
     });
 }
 
