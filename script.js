@@ -140,50 +140,52 @@ function createGrid() {
 
 // Cancella le righe piene e aggiorna il punteggio
 function clearFullLines() {
-	let rowsToClear = [];
+    let rowsToClear = [];
 
-	for (let y = ROWS - 1; y >= 0; y--) {
-		if (lockedCells[y].every(cell => cell)) {
-			rowsToClear.push(y);
-		}
-	}
+    // Passo 1: Identifica tutte le righe piene
+    for (let y = ROWS - 1; y >= 0; y--) {
+        if (lockedCells[y].every(cell => cell)) {
+            rowsToClear.push(y);
+        }
+    }
 
-	if (rowsToClear.length === 0) return;
+    if (rowsToClear.length === 0) return;
 
-	// Effetto visivo prima di cancellare
-	rowsToClear.forEach(y => {
-		for (let x = 0; x < COLS; x++) {
-			boxes[y][x].style.backgroundColor = "white";
-		}
-	});
+    // Passo 2: Effetto visivo prima di cancellare
+    rowsToClear.forEach(y => {
+        for (let x = 0; x < COLS; x++) {
+            boxes[y][x].style.backgroundColor = "red";
+        }
+    });
 
-	setTimeout(() => {
-		rowsToClear.forEach(y => {
-			for (let x = 0; x < COLS; x++) {
-				boxes[y][x].style.backgroundColor = "#0d47a1";
-			}
+    setTimeout(() => {
+        // Passo 3: Cancella le righe piene
+        rowsToClear.forEach(y => {
+            for (let x = 0; x < COLS; x++) {
+                lockedCells[y][x] = false;
+                boxes[y][x].style.backgroundColor = "#0d47a1";
+            }
+        });
 
-			// Sposta le righe superiori verso il basso
-			for (let moveY = y; moveY > 0; moveY--) {
-				for (let x = 0; x < COLS; x++) {
-					lockedCells[moveY][x] = lockedCells[moveY - 1][x];
-					boxes[moveY][x].style.backgroundColor = boxes[moveY - 1][x].style.backgroundColor;
-				}
-			}
+        // Passo 4: Sposta tutte le righe sopra le righe cancellate verso il basso
+        for (let y = rowsToClear.length - 1; y >= 0; y--) { // Inizia dalla riga cancellata più in basso
+            const rowToClear = rowsToClear[y];
+            for (let moveY = rowToClear; moveY > 0; moveY--) {
+                for (let x = 0; x < COLS; x++) {
+                    lockedCells[moveY][x] = lockedCells[moveY - 1][x];
+                    boxes[moveY][x].style.backgroundColor = boxes[moveY - 1][x].style.backgroundColor;
+                }
+            }
+        }
 
-			// Pulisce la prima riga
-			for (let x = 0; x < COLS; x++) {
-				lockedCells[0][x] = false;
-				boxes[0][x].style.backgroundColor = "#0d47a1";
-			}
-		});
-	}, 300);
-
-	// Aggiorna il punteggio
-	if (rowsToClear.length > 0) {
-		score += rowsToClear.length * 100;
-		document.getElementById("score_display").innerText = score;
-	}
+        // Passo 5: Pulisci le righe più in alto dopo che sono state spostate verso il basso
+        for (let y = 0; y < rowsToClear.length; y++) {
+            for (let x = 0; x < COLS; x++) {
+                lockedCells[0][x] = false;
+                boxes[0][x].style.backgroundColor = "#0d47a1";
+            }
+        }
+    }, 200);
 }
 
 // Genera un nuovo blocco casuale al centro della griglia
