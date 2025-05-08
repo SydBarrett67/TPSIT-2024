@@ -1,17 +1,18 @@
+// Costanti e variabili principali
 const ROWS = 20;
 const COLS = 10;
-const BOX_SIZE = 40;
-const boxes = [];
-let isDown = true;
-let currentBlock = [];
-let fallInterval;
-let fallSpeed = 500;
-const lockedCells = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
-let currentColor;
-let score = 0;
-let isGameOver = false;
+const BOX_SIZE = 40; // Dimensione di ogni cella in pixel
+const boxes = []; // Matrice di elementi DOM che rappresentano la griglia
+let isDown = true; // Flag per inizializzare il primo blocco
+let currentBlock = []; // Blocchi attivi (coordinate)
+let fallInterval; // Timer per la caduta automatica
+let fallSpeed = 500; // Velocità di caduta in millisecondi
+const lockedCells = Array.from({ length: ROWS }, () => Array(COLS).fill(false)); // Celle occupate
+let currentColor; // Colore del blocco attivo
+let score = 0; // Punteggio del giocatore
+let isGameOver = false; // Stato del gioco
 
-// Blocchi disponibili
+// Blocchi disponibili (Tetris)
 const shapes = {
 	I: [[1, 1, 1, 1]],
 	O: [[1, 1], [1, 1]],
@@ -22,10 +23,10 @@ const shapes = {
 	Z: [[1, 1, 0], [0, 1, 1]]
 };
 
-const shapeNames = Object.keys(shapes);
-let currentShapeMatrix = null;
+const shapeNames = Object.keys(shapes); // Nomi delle forme
+let currentShapeMatrix = null; // Matrice della forma corrente
 
-// Ruota la matrice in senso orario
+// Ruota una matrice 2D in senso orario
 function rotateMatrix(matrix) {
 	const rows = matrix.length;
 	const cols = matrix[0].length;
@@ -36,11 +37,10 @@ function rotateMatrix(matrix) {
 			rotated[x][rows - 1 - y] = matrix[y][x];
 		}
 	}
-
 	return rotated;
 }
 
-// Verifica se il blocco può essere posizionato in una certa posizione
+// Verifica se un blocco può essere posizionato nella griglia
 function canPlaceBlock(matrix, offsetX, offsetY) {
 	for (let y = 0; y < matrix.length; y++) {
 		for (let x = 0; x < matrix[y].length; x++) {
@@ -58,21 +58,21 @@ function canPlaceBlock(matrix, offsetX, offsetY) {
 	return true;
 }
 
-// Rimuove il blocco corrente dal campo
+// Rimuove la visualizzazione del blocco corrente
 function clearCurrentBlock() {
 	currentBlock.forEach(({ x, y }) => {
 		boxes[y][x].style.backgroundColor = "#0d47a1";
 	});
 }
 
-// Disegna il blocco corrente sul campo
+// Ridisegna il blocco corrente nella sua posizione
 function drawCurrentBlock() {
 	currentBlock.forEach(({ x, y }) => {
 		boxes[y][x].style.backgroundColor = currentColor;
 	});
 }
 
-// Muove il blocco se la posizione è valida
+// Muove il blocco nella direzione indicata (dx, dy)
 function moveBlock(dx, dy) {
 	const newBlock = currentBlock.map(({ x, y }) => ({ x: x + dx, y: y + dy }));
 
@@ -83,7 +83,7 @@ function moveBlock(dx, dy) {
 	}
 }
 
-// Ruota il blocco corrente se possibile
+// Ruota il blocco corrente, se possibile
 function rotateBlock() {
 	const rotatedMatrix = rotateMatrix(currentShapeMatrix);
 	const topLeftX = Math.min(...currentBlock.map(b => b.x));
@@ -106,25 +106,17 @@ function rotateBlock() {
 	drawCurrentBlock();
 }
 
-// Controlli da tastiera
+// Ascolta i tasti freccia per controllare il blocco
 window.addEventListener("keydown", (e) => {
 	switch (e.key) {
-		case "ArrowLeft":
-			moveBlock(-1, 0);
-			break;
-		case "ArrowRight":
-			moveBlock(1, 0);
-			break;
-		case "ArrowDown":
-			moveBlockDown();
-			break;
-		case "ArrowUp":
-			rotateBlock();
-			break;
+		case "ArrowLeft": moveBlock(-1, 0); break;
+		case "ArrowRight": moveBlock(1, 0); break;
+		case "ArrowDown": moveBlockDown(); break;
+		case "ArrowUp": rotateBlock(); break;
 	}
 });
 
-// Crea la griglia di gioco
+// Crea la griglia iniziale e genera il primo blocco
 function createGrid() {
 	const board = document.getElementById("game_board");
 
@@ -146,7 +138,7 @@ function createGrid() {
 	}
 }
 
-// Cancella righe complete e aggiorna il punteggio
+// Cancella le righe piene e aggiorna il punteggio
 function clearFullLines() {
 	let rowsToClear = [];
 
@@ -158,6 +150,7 @@ function clearFullLines() {
 
 	if (rowsToClear.length === 0) return;
 
+	// Effetto visivo prima di cancellare
 	rowsToClear.forEach(y => {
 		for (let x = 0; x < COLS; x++) {
 			boxes[y][x].style.backgroundColor = "white";
@@ -170,6 +163,7 @@ function clearFullLines() {
 				boxes[y][x].style.backgroundColor = "#0d47a1";
 			}
 
+			// Sposta le righe superiori verso il basso
 			for (let moveY = y; moveY > 0; moveY--) {
 				for (let x = 0; x < COLS; x++) {
 					lockedCells[moveY][x] = lockedCells[moveY - 1][x];
@@ -177,6 +171,7 @@ function clearFullLines() {
 				}
 			}
 
+			// Pulisce la prima riga
 			for (let x = 0; x < COLS; x++) {
 				lockedCells[0][x] = false;
 				boxes[0][x].style.backgroundColor = "#0d47a1";
@@ -184,20 +179,21 @@ function clearFullLines() {
 		});
 	}, 300);
 
+	// Aggiorna il punteggio
 	if (rowsToClear.length > 0) {
 		score += rowsToClear.length * 100;
 		document.getElementById("score_display").innerText = score;
 	}
 }
 
-// Genera un nuovo blocco casuale
+// Genera un nuovo blocco casuale al centro della griglia
 function generateBlock() {
 	const randomShapeName = shapeNames[Math.floor(Math.random() * shapeNames.length)];
 	const randomShape = shapes[randomShapeName];
 	currentBlock = [];
 	currentShapeMatrix = randomShape;
 
-	// Colore in base alla forma
+	// Colore specifico per ogni forma
 	switch (randomShapeName) {
 		case "I": currentColor = "red"; break;
 		case "O": currentColor = "violet"; break;
@@ -212,13 +208,14 @@ function generateBlock() {
 	const offsetX = Math.floor((COLS - randomShape[0].length) / 2);
 	const offsetY = 0;
 
-	// Costruisce il blocco iniziale
+	// Crea blocchi iniziali in alto al centro
 	for (let y = 0; y < randomShape.length; y++) {
 		for (let x = 0; x < randomShape[y].length; x++) {
 			if (randomShape[y][x] === 1) {
 				const gridY = offsetY + y;
 				const gridX = offsetX + x;
 
+				// Se la cella è già occupata, termina il gioco
 				if (lockedCells[gridY]?.[gridX]) {
 					clearInterval(fallInterval);
 					isGameOver = true;
@@ -236,9 +233,10 @@ function generateBlock() {
 	fallInterval = setInterval(moveBlockDown, fallSpeed);
 }
 
-// Fa cadere il blocco verso il basso
+// Sposta il blocco verso il basso automaticamente
 function moveBlockDown() {
 	if (isGameOver) return;
+
 	const canMove = currentBlock.every(({ x, y }) => {
 		const nextY = y + 1;
 		return nextY < ROWS && !isOccupied(nextY, x);
@@ -250,24 +248,18 @@ function moveBlockDown() {
 		return;
 	}
 
-	currentBlock.forEach(({ x, y }) => {
-		boxes[y][x].style.backgroundColor = "#0d47a1";
-	});
-
+	clearCurrentBlock();
 	currentBlock = currentBlock.map(({ x, y }) => ({ x, y: y + 1 }));
-
-	currentBlock.forEach(({ x, y }) => {
-		boxes[y][x].style.backgroundColor = currentColor;
-	});
+	drawCurrentBlock();
 }
 
-// Verifica se una cella è occupata
+// Controlla se una cella è occupata
 function isOccupied(y, x) {
 	if (y >= ROWS || x < 0 || x >= COLS) return true;
 	return lockedCells[y][x];
 }
 
-// Blocca il blocco attuale nella griglia
+// Blocca il blocco corrente nella griglia
 function lockBlock() {
 	currentBlock.forEach(({ x, y }) => {
 		boxes[y][x].style.backgroundColor = currentColor;
@@ -276,10 +268,9 @@ function lockBlock() {
 	clearFullLines();
 }
 
-// Pulsante di riavvio
+// Riavvia il gioco
 document.getElementById("restart_btn").addEventListener("click", restartGame);
 
-// Riavvia il gioco
 function restartGame() {
 	clearInterval(fallInterval);
 	score = 0;
