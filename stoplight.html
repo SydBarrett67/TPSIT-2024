@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Gioco del Tempo di Reazione</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: darkred;
+      color: white;
+      text-align: center;
+      margin-top: 100px;
+      cursor: pointer;
+    }
+
+    #risultati {
+        color: white;
+        width: 300px;
+        text-align: left;
+        margin: 30px auto;
+        max-height: 100px;    /* Maximum height */
+        overflow-y: auto;     /* Enable vertical scrolling if content overflows */
+        padding-right: 10px;  /* Add some space to make scrolling easier */
+    }
+    #risultati ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    #risultati li {
+        word-wrap: break-word;   /* Ensure long words break and wrap */
+        margin-bottom: 5px;
+    }
+
+    #risultatiMedia {
+      color: white;
+      height: 50px;
+      width: 300px;
+      margin: 0 auto;
+      overflow: visible;
+    }
+
+    #startBtn {
+        padding: 15px 30px;
+        font-size: 18px;
+        border-radius: 25px;
+        border: 2px solid green;
+        color: white;
+        background-color: darkred;
+        cursor: pointer;
+    }
+    #istruzioni {
+        font-size: 25px;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+    #startBtn:active {
+        transform: translateY(4px);
+        transition-duration: 0.2s;
+    }
+    #futa {
+        position: fixed;
+        height: 20px;
+        justify-items: center;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgb(50,0,0);
+        color: white;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+    <h1>Tempi di reazione</h1>
+    <div id="risultatiMedia"></div>
+    <h3 id="istruzioni">Premi "Inizia" per partire</h3>
+    <div id="risultati"></div>
+    <button id="startBtn">Inizia</button>
+    <div id="stats" style="margin-top: 40px; height:500px; width: 800px;margin: auto;color:white;">
+        <p><strong>Deviazione standard:</strong> <span id="stdDev">0.00</span> s</p>
+        <p id="feedback"></p>
+        <canvas id="chart" width="400" height="200"></canvas>
+    </div>
+
+    <footer id="futa">@AlessandroDiLuca</footer>
+
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const istruzioni = document.getElementById("istruzioni");
+    const risultatiDiv = document.getElementById("risultati");
+    
+    let timerVisuale; 
+    let tempiReazione = [];
+    let numeroTentativi = 2;
+    let tentativoCorrente = 0;
+    let tempoInizio = 0;
+    let pronto = false;
+    let timer;
+
+    function iniziaTentativo() {
+      istruzioni.textContent = "Preparati...";
+      startBtn.style.display = "none";
+      document.body.style.backgroundColor = "darkred";
+      pronto = false;
+
+      const attesa = Math.random() * 2000 + 1000; // 2-5 secondi
+      timer = setTimeout(() => {
+        document.body.style.backgroundColor = "green";
+        tempoInizio = Date.now();
+        pronto = true;
+
+        // Start live updating timer in istruzioni
+        timerVisuale = setInterval(() => {
+            const tempoAttuale = (Date.now() - tempoInizio) / 1000;
+            istruzioni.textContent = `Tempo: ${tempoAttuale.toFixed(3)}s`;
+        }, 50); // updates every 50ms
+
+      }, attesa);
+    }
+
+    function registraReazione() {
+        updateStatsAndChart();
+
+        clearInterval(timerVisuale); // Stop updating the timer
+        if (!tempoInizio) return;
+
+        if (!pronto) {
+            document.body.style.backgroundColor = "orange";
+            istruzioni.textContent = "Troppo presto! Aspetta il verde!";
+            clearTimeout(timer);
+
+            setTimeout(() => {
+                document.body.style.backgroundColor = "darkred";
+                istruzioni.textContent = `Riprova...`;
+                iniziaTentativo();
+            }, 1500);
+            return;
+        }
+
+        const tempoFine = Date.now();
+        const tempoReazione = (tempoFine - tempoInizio) / 1000;
+        tempiReazione.push(tempoReazione);
+
+        istruzioni.textContent = `Tempo: ${tempoReazione.toFixed(3)}s`;
+        document.body.style.backgroundColor = "darkred";
+        pronto = false;
+        tempoInizio = 0;
+
+        mostraRisultati();
+
+        setTimeout(() => {
+            istruzioni.textContent = `Pronto per un'altra prova...`;
+            iniziaTentativo();
+        }, 2000);
+        }
+
+    function mostraRisultati() {
+        let output = "<h3>Statistiche</h3><ul>";
+        let outputMedie = "<ul>";
+        let somma = 0;
+        tempiReazione.forEach((t, i) => {
+            output += `<li>#${i + 1}: ${t.toFixed(3)}s</li>`;
+            somma += t;
+        });
+        const media = somma / tempiReazione.length;
+        const migliore = Math.min(...tempiReazione);
+        risultatiDiv.innerHTML = output;
+        outputMedie += `
+            <li>
+                Media: ${media.toFixed(3)}s
+            </li>
+            <li>
+                Migliore: ${migliore.toFixed(3)}s
+            </li>
+            </ul>`;
+        document.getElementById("risultatiMedia").innerHTML = outputMedie;
+    }
+
+    startBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      risultatiDiv.innerHTML = "";
+      iniziaTentativo();
+    });
+
+    function gestisciClick() {
+      if (startBtn.style.display === "none") {
+        registraReazione();
+      }
+    }
+
+    window.addEventListener("click", gestisciClick);
+    document.addEventListener("keydown", (e) => {
+        if (e.code === "Space") {
+            e.preventDefault();
+
+            if (startBtn.style.display !== "none") {
+            startBtn.click();
+            } else {
+            registraReazione();
+            }
+        }
+    });
+
+    window.addEventListener("touchstart", gestisciClick);
+     
+    let chart;
+
+        function updateStatsAndChart() {
+        const mean = calculateMean(tempiReazione);
+        const stdDev = calculateStandardDeviation(tempiReazione, mean);
+
+        document.getElementById('stdDev').textContent = stdDev.toFixed(2);
+
+        renderChart(tempiReazione, mean, stdDev);
+        analyzeData(stdDev);
+    }
+
+    function calculateMean(arr) {
+        return arr.reduce((a, b) => a + b, 0) / arr.length;
+    }
+
+    function calculateStandardDeviation(arr, mean) {
+        const variance = arr.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / arr.length;
+        return Math.sqrt(variance);
+    }
+
+    function renderChart(data, mean, stdDev) {
+    const labels = data.map((_, i) => `Prova ${i + 1}`);
+    const meanLine = new Array(data.length).fill(mean);
+    const upper = new Array(data.length).fill(mean + stdDev);
+    const lower = new Array(data.length).fill(mean - stdDev);
+
+    if (chart) chart.destroy();
+    const ctx = document.getElementById('chart').getContext('2d');
+
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+        labels,
+        datasets: [
+            {
+            label: 'Tempi (s)',
+            data,
+            borderColor: 'blue',
+            tension: 0.3
+            },
+            {
+            label: '+1 Dev. Std.',
+            data: upper,
+            borderColor: 'orange',
+            borderDash: [3, 3]
+            },
+            {
+            label: '-1 Dev. Std.',
+            data: lower,
+            borderColor: 'orange',
+            borderDash: [3, 3]
+            }
+        ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                position: 'top',
+                labels: {
+                    color: 'white' // Legend text
+                }
+                },
+                title: {
+                display: true,
+                text: 'Distribuzione dei Tempi',
+                color: 'white' // Title text
+                }
+            },
+            scales: {
+                x: {
+                ticks: {
+                    color: 'white' // X-axis labels
+                },
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)' // Optional: light white grid lines
+                }
+                },
+                y: {
+                ticks: {
+                    color: 'white' // Y-axis labels
+                },
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.1)' // Optional: light white grid lines
+                }
+                }
+            }
+        }
+    });
+    }
+
+    function analyzeData(stdDev) {
+        const feedback = document.getElementById('feedback');
+        if (tempiReazione.length < 2) {
+            feedback.textContent = 'Inserisci almeno 2 valori per l’analisi.';
+            return;
+        }
+
+        if (stdDev < 0.3) {
+            feedback.textContent = "Ottimo! I tuoi tempi sono molto costanti.";
+        } else if (stdDev < 1) {
+            feedback.textContent = "I tuoi tempi sono abbastanza stabili.";
+        } else {
+            feedback.textContent = "Attenzione! I tuoi tempi sono molto variabili. Prova a concentrarti meglio.";
+        }
+    }
+    
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
