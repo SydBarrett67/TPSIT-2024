@@ -73,8 +73,9 @@
     }
   </style>
 </head>
-<body>
+<body onload="getName()">
     <h1>Tempi di reazione</h1>
+    <button id="downloadJsonBtn">Download JSON</button>
     <div id="risultatiMedia"></div>
     <h3 id="istruzioni">Premi "Inizia" per partire</h3>
     <div id="risultati"></div>
@@ -99,6 +100,12 @@
     let tempoInizio = 0;
     let pronto = false;
     let timer;
+    let name;
+
+
+    function getName() {
+        name = prompt("Inserisci il tuo nome: ") || "Anonimo";
+    }
 
     function iniziaTentativo() {
       istruzioni.textContent = "Preparati...";
@@ -177,7 +184,43 @@
             </li>
             </ul>`;
         document.getElementById("risultatiMedia").innerHTML = outputMedie;
+        jsonOut(media);
     }
+
+    let reactionData = null;  // Variable to store the data before downloading
+
+    // Modify the jsonOut function to store data rather than downloading immediately
+    function jsonOut(media) {
+        const mean = calculateMean(tempiReazione);
+        const data = {
+            reactionTimes: tempiReazione,  // Store reaction times
+            name: name,
+            median: calculateMean(tempiReazione),
+            standardDeviation: calculateStandardDeviation(tempiReazione, mean)
+        };
+
+        // Store the generated data for later use
+        reactionData = JSON.stringify(data, null, 2);
+    }
+
+    // Add event listener to the "Download JSON" button
+    const downloadJsonBtn = document.getElementById("downloadJsonBtn");
+
+    downloadJsonBtn.addEventListener("click", function () {
+        if (!reactionData) {
+            alert("Nessun dato da scaricare. Completa almeno un tentativo.");
+            return;
+        }
+
+        // Create a Blob from the stored data
+        const blob = new Blob([reactionData], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'reactionData.json';
+
+        // Programmatically click the link to trigger the download
+        link.click();
+    });
 
     startBtn.addEventListener("click", (e) => {
       e.stopPropagation();
