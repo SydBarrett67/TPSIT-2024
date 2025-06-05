@@ -75,6 +75,60 @@
             animation: pulse 1.5s infinite ease-in-out;
         }
 
+        .slidecontainer {
+            width: 30%;
+            top: 2%;
+            left: 75%;
+            padding: 10px;
+            border: 10px solid red;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* spacing between elements */
+            color: white;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 70%;
+            height: 40px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            font-size: 25px;
+            border-radius: 15px;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: darkred;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: #04AA6D;
+            cursor: pointer;
+        }
+
+        #g_visual {
+            color: white;
+            border: 2px solid blue;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+
     </style>
 </head>
 <body onload="start()">
@@ -82,15 +136,20 @@
     <div class="progress" role="progressbar" aria-label="Health" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
         <div id="fuel" class="progress-bar" style="width: 100%;"></div>
     </div>
+    <div class="slidecontainer">
+        <p><i style="color:white">Current gravity level: <b id="g_visual"></b>m/s^2</i></p>
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+    </div>
+
     <div id="stat-box">
         <b id="speed">0 </b> m/s
     </div>
     <div id="moon"></div>
 
     <script>
-        const gravity = 0.00001; // Adjusted to fall realistically
+        let gravity = 0.00001; // Adjusted to fall realistically
         let fuel=100;
-        const moveSpeed = 0.00015;
+        const moveSpeed = 0.00050;
         let lastTimestamp = 0;
         const startRot = (Math.random()*180);
         const startRotRad = startRot * Math.PI / 180;
@@ -138,8 +197,8 @@
             if (keys.d) lander.rotVel += rotSpeed;
 
             let img = "lander.png";
-            if (keys.w && keys.a) img = "lander_activeL_F.png";
-            else if (keys.w && keys.d) img = "lander_activeR_F.png";
+            if (keys.w && keys.a) img = "lander_activeR_F.png";
+            else if (keys.w && keys.d) img = "lander_activeL_F.png";
             else if (keys.w) img = "lander_active.png";
             else if (keys.a) img = "lander_activeR.png";
             else if (keys.d) img = "lander_activeL.png";
@@ -165,7 +224,7 @@
                 document.getElementById("speed").innerText = Math.abs(speed.toFixed(2));
 
                 requestAnimationFrame(fall);
-            } else if (!crashed && speed<=3.00) {
+            } else if (!crashed && speed<=8.00) {
                 landed=true
                 document.getElementById("speed").innerText = "Mission completed - Landed with " + Math.abs(speed.toFixed(2));
             }
@@ -173,12 +232,22 @@
                 crashed = true;
                 document.getElementById("speed").innerText = "Mission failed - mind the speed!"
             }
+
+            const slider = document.getElementById("myRange");
+            const output = document.getElementById("g_visual");
+
+            slider.oninput = function () {
+                gravity = slider.value / 500000;
+                output.innerHTML = gravity;
+            };
+            output.innerHTML = gravity; // Initialize display
         }
 
         function start() {
             requestAnimationFrame(fall);
         }
 
+        
 
         document.addEventListener("keydown", () => {
             if (event.key == "w") keys.w = true;
