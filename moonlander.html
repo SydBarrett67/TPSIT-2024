@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lander Simulation</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+            background-color: black;
+            position: relative;
+        }
+
+        #lander {
+            background-image: url("lander.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            top: 0%;
+            z-index: 2;
+        }
+        #stat-box {
+            position: absolute;
+            height: 50px;
+            width: 250px;
+            background-color: rgba(200, 30, 30, 0.4);
+            top: 5%;
+            left: 2%;
+            padding: 30px;
+            border-radius: 25px;
+            border: 3px solid beige;
+            color: beige;
+            font-size: larger;
+            z-index: 3;
+        }
+
+        #moon {
+            width: 100%;
+            height: 10vh;
+            background-image: url("terrain.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: absolute;
+            bottom: 0;
+            z-index: 0;
+        }
+        
+        .progress {
+            position: absolute;
+            top: 2%;
+            left: 30%;
+            width: 40%;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            z-index: 999;
+        }
+
+        .progress-bar {
+            background: repeating-linear-gradient(
+                45deg,
+                #ff4d4d,
+                #ff4d4d 10px,
+                #ff6666 10px,
+                #ff6666 20px
+            );
+            height: 100%;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+    </style>
+</head>
+<body onload="start()">
+    <div id="lander"></div>
+    <div class="progress" role="progressbar" aria-label="Health" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+        <div id="fuel" class="progress-bar" style="width: 100%;"></div>
+    </div>
+    <div id="stat-box">
+        <b id="speed">0 </b> m/s
+    </div>
+    <div id="moon"></div>
+
+    <script>
+        const gravity = 0.00001; // Adjusted to fall realistically
+        let fuel=100;
+        const moveSpeed = 0.00015;
+        let lastTimestamp = 0;
+        const startRot = (Math.random()*180);
+        const startRotRad = startRot * Math.PI / 180;
+        const randSpdY = Math.random()*0.3 + 0.1;
+        const randSpdX = Math.random()*0.3 + 0.1;
+        let lander = {
+            posY: 0,
+            posX: 50,
+            rot: startRot,
+            rotVel: 0,
+            currVelY: randSpdY * Math.sin(startRotRad),
+            currVelX: randSpdX * Math.cos(startRotRad),
+            element: document.getElementById("lander")
+        };
+        const rotSpeed = 0.04
+        let keys = { w: false, a:false, d:false }
+        let landed=false
+        let crashed=false;
+
+        function fall(timestamp) {
+            if (lastTimestamp === 0) lastTimestamp = timestamp;
+            const deltaTime = timestamp - lastTimestamp;
+            lastTimestamp = timestamp;
+
+            if (!landed) lander.currVelY += gravity * deltaTime;
+
+            const throttle = fuel / 100; // from 1.0 down to 0.0
+            const moveSpeed2 = moveSpeed * throttle;
+
+            const rotRad = lander.rot * Math.PI / 180;
+
+            if (fuel <= 0) {
+                document.getElementById("fuel").style.background = "#333";
+            }
+            
+            if (keys.w && fuel > 0) {
+                lander.currVelY -= moveSpeed2 * deltaTime * Math.sin(rotRad);
+                lander.currVelX -= moveSpeed2 * deltaTime * Math.cos(rotRad);
+                fuel-=0.1;
+                document.getElementById("fuel").ariaValueNow = fuel;
+                document.getElementById("fuel").innerText = fuel.toFixed(2) + "%";
+                document.getElementById("fuel").style.width = fuel + "%";
+            }
+            if (keys.a) lander.rotVel -= rotSpeed;
+            if (keys.d) lander.rotVel += rotSpeed;
+
+            let img = "lander.png";
+            if (keys.w && keys.a) img = "lander_activeL_F.png";
+            else if (keys.w && keys.d) img = "lander_activeR_F.png";
+            else if (keys.w) img = "lander_active.png";
+            else if (keys.a) img = "lander_activeR.png";
+            else if (keys.d) img = "lander_activeL.png";
+
+            lander.element.style.backgroundImage = `url("${img}")`;
+
+            lander.rot += lander.rotVel;
+   
+            const speed = Math.sqrt(lander.currVelX ** 2 + lander.currVelY ** 2) * 100;
+            
+            if (lander.posY < -10 || lander.posX > 110 || lander.posX < -10) {
+                crashed = true;
+            }
+
+            if (lander.posY < 85 && !crashed) {
+                lander.posY += lander.currVelY * deltaTime * 0.1;
+                lander.posX += lander.currVelX * deltaTime * 0.1;
+
+                lander.element.style.top = lander.posY + '%';
+                lander.element.style.left = lander.posX + '%';
+                lander.element.style.transform = 'rotate('+lander.rot+'deg)';
+
+                document.getElementById("speed").innerText = Math.abs(speed.toFixed(2));
+
+                requestAnimationFrame(fall);
+            } else if (!crashed && speed<=3.00) {
+                landed=true
+                document.getElementById("speed").innerText = "Mission completed - Landed with " + Math.abs(speed.toFixed(2));
+            }
+            else {
+                crashed = true;
+                document.getElementById("speed").innerText = "Mission failed - mind the speed!"
+            }
+        }
+
+        function start() {
+            requestAnimationFrame(fall);
+        }
+
+
+        document.addEventListener("keydown", () => {
+            if (event.key == "w") keys.w = true;
+            if (event.key == "a") keys.a = true;
+            if (event.key == "d") keys.d = true;
+        })
+        document.addEventListener("keyup", () => {
+            if (event.key == "w") keys.w = false;
+            if (event.key == "a") keys.a = false;
+            if (event.key == "d") keys.d = false;
+        })
+
+    </script>
+</body>
+</html>
